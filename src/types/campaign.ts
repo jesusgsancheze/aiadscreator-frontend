@@ -1,0 +1,35 @@
+import type { Client } from './client';
+
+export type SocialMedia = 'instagram' | 'tiktok' | 'facebook' | 'whatsapp';
+export type CampaignStatus = 'draft' | 'generating' | 'ready' | 'published' | 'failed';
+
+export interface CampaignAnalytics {
+  impressions?: number;
+  clicks?: number;
+  conversions?: number;
+  engagement?: number;
+  reach?: number;
+  ctr?: number;
+  spent?: number;
+}
+
+export interface Campaign {
+  _id: string;
+  socialMedia: SocialMedia;
+  productImage: string;
+  campaignDescription: string;
+  imageDescription: string;
+  clientId: string | Client;
+  userId: string;
+  copy: string | null;
+  caption: string | null;
+  imagePrompt: string | null;
+  generatedImages: string[];
+  status: CampaignStatus;
+  socialMediaLink: string | null;
+  analytics: CampaignAnalytics;
+  performanceScore: number | null;
+  selectedImage: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
