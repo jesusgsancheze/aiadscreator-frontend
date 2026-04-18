@@ -10,6 +10,7 @@ import FileUpload from '../ui/FileUpload';
 import type { Client } from '../../types/client';
 import { useCreateClient, useUpdateClient } from '../../hooks/useClients';
 import { getImageUrl } from '../../lib/utils';
+import ClientMetaConnection from '../meta/ClientMetaConnection';
 
 const clientSchema = z.object({
   name: z.string().min(2),
@@ -105,6 +106,10 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
             preview={client?.logo ? getImageUrl(client.logo) : null}
           />
         </div>
+
+        {client && (
+          <ClientMetaConnection clientId={client._id} />
+        )}
 
         <div className="flex justify-end gap-3 pt-4">
           <Button variant="ghost" type="button" onClick={onClose}>

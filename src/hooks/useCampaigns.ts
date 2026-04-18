@@ -22,10 +22,7 @@ export function useCampaigns(filters?: CampaignFilters) {
 export function useCampaign(id: string) {
   return useQuery({
     queryKey: ['campaigns', id],
-    queryFn: async () => {
-      const res = await campaignsApi.getCampaign(id);
-      return res.data;
-    },
+    queryFn: () => campaignsApi.getCampaign(id),
     enabled: !!id,
     refetchInterval: (query) => {
       const campaign = query.state.data;

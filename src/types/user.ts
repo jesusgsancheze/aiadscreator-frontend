@@ -6,5 +6,6 @@ export interface User {
   role: 'user' | 'superadmin';
   language: 'en' | 'es' | 'fr';
   isEmailVerified: boolean;
+  tokenBalance: number;
   createdAt: string;
 }

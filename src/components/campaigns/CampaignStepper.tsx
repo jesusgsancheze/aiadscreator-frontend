@@ -22,6 +22,7 @@ interface CampaignState {
   productImagePreview: string | null;
   campaignDescription: string;
   imageDescription: string;
+  imageCount: number;
   campaignId: string | null;
 }
 
@@ -30,7 +31,7 @@ type CampaignAction =
   | { type: 'SET_SOCIAL_MEDIA'; socialMedia: SocialMedia }
   | { type: 'SET_CLIENT'; clientId: string; clientName: string }
   | { type: 'SET_IMAGE'; file: File; preview: string }
-  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string }
+  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number }
   | { type: 'SET_CAMPAIGN_ID'; campaignId: string };
 
 function reducer(state: CampaignState, action: CampaignAction): CampaignState {
@@ -48,6 +49,7 @@ function reducer(state: CampaignState, action: CampaignAction): CampaignState {
         ...state,
         campaignDescription: action.campaignDescription,
         imageDescription: action.imageDescription,
+        imageCount: action.imageCount,
       };
     case 'SET_CAMPAIGN_ID':
       return { ...state, campaignId: action.campaignId };
@@ -65,6 +67,7 @@ const initialState: CampaignState = {
   productImagePreview: null,
   campaignDescription: '',
   imageDescription: '',
+  imageCount: 3,
   campaignId: null,
 };
 
@@ -185,11 +188,13 @@ export default function CampaignStepper() {
             <Step4Descriptions
               campaignDescription={state.campaignDescription}
               imageDescription={state.imageDescription}
-              onChange={(cd, id) => {
+              imageCount={state.imageCount}
+              onChange={(cd, id, ic) => {
                 dispatch({
                   type: 'SET_DESCRIPTIONS',
                   campaignDescription: cd,
                   imageDescription: id,
+                  imageCount: ic,
                 });
               }}
             />
@@ -200,6 +205,7 @@ export default function CampaignStepper() {
               onCampaignCreated={(id) => {
                 dispatch({ type: 'SET_CAMPAIGN_ID', campaignId: id });
               }}
+              onNext={() => dispatch({ type: 'SET_STEP', step: 6 })}
             />
           )}
           {state.step === 6 && (

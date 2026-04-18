@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check, Camera, Music, Share, MessageCircle } from 'lucide-react';
+import { Check, Camera, Music, Share, MessageCircle, Pencil, X } from 'lucide-react';
 import Card from '../../ui/Card';
 import Button from '../../ui/Button';
-import { useCampaign } from '../../../hooks/useCampaigns';
+import { useCampaign, useUpdateCampaign } from '../../../hooks/useCampaigns';
 import { getImageUrl } from '../../../lib/utils';
+import GeneratedImagesGrid from '../GeneratedImagesGrid';
+import { useSelectImage } from '../../../hooks/useCampaigns';
 import type { SocialMedia } from '../../../types/campaign';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
@@ -14,6 +17,74 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   facebook: <Share className="h-5 w-5" />,
   whatsapp: <MessageCircle className="h-5 w-5" />,
 };
+
+interface InlineEditProps {
+  label: string;
+  value: string;
+  onSave: (value: string) => void;
+  multiline?: boolean;
+}
+
+function InlineEdit({ label, value, onSave, multiline }: InlineEditProps) {
+  const { t } = useTranslation();
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+
+  const handleSave = () => {
+    onSave(draft);
+    setEditing(false);
+  };
+
+  return (
+    <Card>
+      <div className="flex items-center justify-between mb-1">
+        <p className="text-xs text-slate-400">{label}</p>
+        {!editing ? (
+          <button
+            onClick={() => { setDraft(value); setEditing(true); }}
+            className="flex items-center gap-1 px-2 py-0.5 rounded text-xs text-slate-400 hover:text-brand-primary hover:bg-brand-primary/5 transition-all"
+          >
+            <Pencil className="h-3 w-3" />
+            {t('common.edit')}
+          </button>
+        ) : (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handleSave}
+              className="p-1 rounded text-brand-primary hover:bg-brand-primary/10 transition-all"
+            >
+              <Check className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => { setDraft(value); setEditing(false); }}
+              className="p-1 rounded text-slate-400 hover:bg-slate-100 transition-all"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )}
+      </div>
+      {editing ? (
+        multiline ? (
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            rows={4}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all duration-200 resize-none"
+          />
+        ) : (
+          <input
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all duration-200"
+          />
+        )
+      ) : (
+        <p className="text-sm text-slate-600 whitespace-pre-wrap">{value}</p>
+      )}
+    </Card>
+  );
+}
 
 interface Step6Props {
   state: {
@@ -30,6 +101,18 @@ export default function Step6Review({ state }: Step6Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: campaign } = useCampaign(state.campaignId || '');
+  const updateCampaign = useUpdateCampaign();
+  const selectImage = useSelectImage();
+
+  const handleSaveField = (field: string, value: string) => {
+    if (!state.campaignId) return;
+    updateCampaign.mutate({ id: state.campaignId, payload: { [field]: value } });
+  };
+
+  const handleSelectImage = (index: number) => {
+    if (!state.campaignId) return;
+    selectImage.mutate({ id: state.campaignId, imageIndex: index });
+  };
 
   return (
     <div>
@@ -68,13 +151,6 @@ export default function Step6Review({ state }: Step6Props) {
           </div>
         </Card>
 
-        <Card>
-          <p className="text-xs text-slate-400 mb-1">{t('campaigns.campaignDescription')}</p>
-          <p className="text-sm text-slate-600">{state.campaignDescription}</p>
-          <p className="text-xs text-slate-400 mb-1 mt-4">{t('campaigns.imageDescription')}</p>
-          <p className="text-sm text-slate-600">{state.imageDescription}</p>
-        </Card>
-
         {state.productImagePreview && (
           <Card>
             <p className="text-xs text-slate-400 mb-2">{t('campaigns.productImage')}</p>
@@ -89,24 +165,29 @@ export default function Step6Review({ state }: Step6Props) {
         {campaign && (
           <>
             {campaign.copy && (
-              <Card>
-                <p className="text-xs text-slate-400 mb-1">{t('campaigns.copy')}</p>
-                <p className="text-sm text-slate-600 whitespace-pre-wrap">{campaign.copy}</p>
-              </Card>
+              <InlineEdit
+                label={t('campaigns.copy')}
+                value={campaign.copy}
+                onSave={(v) => handleSaveField('copy', v)}
+                multiline
+              />
             )}
             {campaign.caption && (
-              <Card>
-                <p className="text-xs text-slate-400 mb-1">{t('campaigns.caption')}</p>
-                <p className="text-sm text-slate-600 whitespace-pre-wrap">{campaign.caption}</p>
-              </Card>
+              <InlineEdit
+                label={t('campaigns.caption')}
+                value={campaign.caption}
+                onSave={(v) => handleSaveField('caption', v)}
+                multiline
+              />
             )}
-            {campaign.selectedImage !== null && campaign.generatedImages[campaign.selectedImage] && (
+
+            {campaign.generatedImages.length > 0 && (
               <Card>
-                <p className="text-xs text-slate-400 mb-2">{t('campaigns.selectImage')}</p>
-                <img
-                  src={getImageUrl(campaign.generatedImages[campaign.selectedImage])}
-                  alt="Selected"
-                  className="max-h-64 rounded-xl object-contain"
+                <p className="text-xs text-slate-400 mb-3">{t('campaigns.selectImage')}</p>
+                <GeneratedImagesGrid
+                  images={campaign.generatedImages}
+                  selectedIndex={campaign.selectedImage}
+                  onSelect={handleSelectImage}
                 />
               </Card>
             )}
@@ -118,7 +199,7 @@ export default function Step6Review({ state }: Step6Props) {
             size="lg"
             onClick={() => navigate(state.campaignId ? `/campaigns/${state.campaignId}` : '/campaigns')}
           >
-            {t('campaigns.save')}
+            {t('campaigns.viewCampaign')}
           </Button>
         </div>
       </div>

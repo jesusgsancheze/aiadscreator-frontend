@@ -4,39 +4,27 @@ import { adminApi } from '../api/admin.api';
 export function useAdminDashboard() {
   return useQuery({
     queryKey: ['admin', 'dashboard'],
-    queryFn: async () => {
-      const res = await adminApi.getDashboard();
-      return res.data;
-    },
+    queryFn: adminApi.getDashboard,
   });
 }
 
 export function useAdminUsers() {
   return useQuery({
     queryKey: ['admin', 'users'],
-    queryFn: async () => {
-      const res = await adminApi.getUsers();
-      return res.data;
-    },
+    queryFn: adminApi.getUsers,
   });
 }
 
 export function useAdminClients() {
   return useQuery({
     queryKey: ['admin', 'clients'],
-    queryFn: async () => {
-      const res = await adminApi.getClients();
-      return res.data;
-    },
+    queryFn: adminApi.getClients,
   });
 }
 
 export function useAdminCampaigns() {
   return useQuery({
     queryKey: ['admin', 'campaigns'],
-    queryFn: async () => {
-      const res = await adminApi.getCampaigns();
-      return res.data;
-    },
+    queryFn: adminApi.getCampaigns,
   });
 }

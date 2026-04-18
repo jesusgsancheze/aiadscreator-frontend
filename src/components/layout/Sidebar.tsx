@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   Megaphone,
   Users,
+  Coins,
   Shield,
   LogOut,
   X,
@@ -19,6 +20,7 @@ const navItems = [
   { key: 'dashboard', path: '/dashboard', icon: LayoutDashboard },
   { key: 'campaigns', path: '/campaigns', icon: Megaphone },
   { key: 'clients', path: '/clients', icon: Users },
+  { key: 'tokens', path: '/tokens', icon: Coins },
 ];
 
 export default function Sidebar() {

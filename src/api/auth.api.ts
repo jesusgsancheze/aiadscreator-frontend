@@ -16,38 +16,38 @@ interface RegisterPayload {
 }
 
 interface AuthResponse {
+  accessToken: string;
   user: User;
-  token: string;
 }
 
 export const authApi = {
-  register: async (payload: RegisterPayload): Promise<ApiResponse<AuthResponse>> => {
+  register: async (payload: RegisterPayload) => {
     const { data } = await api.post('/auth/register', payload);
     return data;
   },
 
-  login: async (payload: LoginPayload): Promise<ApiResponse<AuthResponse>> => {
+  login: async (payload: LoginPayload): Promise<AuthResponse> => {
     const { data } = await api.post('/auth/login', payload);
     return data;
   },
 
-  verifyEmail: async (token: string): Promise<ApiResponse<{ message: string }>> => {
+  verifyEmail: async (token: string) => {
     const { data } = await api.get(`/auth/verify-email?token=${token}`);
     return data;
   },
 
-  resendVerification: async (email: string): Promise<ApiResponse<{ message: string }>> => {
+  resendVerification: async (email: string) => {
     const { data } = await api.post('/auth/resend-verification', { email });
     return data;
   },
 
-  getProfile: async (): Promise<ApiResponse<User>> => {
-    const { data } = await api.get('/auth/profile');
+  getProfile: async (): Promise<User> => {
+    const { data } = await api.get('/auth/me');
     return data;
   },
 
-  updateLanguage: async (language: string): Promise<ApiResponse<User>> => {
-    const { data } = await api.patch('/auth/language', { language });
+  updateLanguage: async (language: string) => {
+    const { data } = await api.patch('/auth/me/language', { language });
     return data;
   },
 };

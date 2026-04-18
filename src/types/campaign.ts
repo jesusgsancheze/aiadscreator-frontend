@@ -19,6 +19,7 @@ export interface Campaign {
   productImage: string;
   campaignDescription: string;
   imageDescription: string;
+  imageCount: number;
   clientId: string | Client;
   userId: string;
   copy: string | null;
@@ -30,6 +31,10 @@ export interface Campaign {
   analytics: CampaignAnalytics;
   performanceScore: number | null;
   selectedImage: number | null;
+  metaCampaignId: string | null;
+  metaAdSetId: string | null;
+  metaAdId: string | null;
+  metaStatus: string | null;
   createdAt: string;
   updatedAt: string;
 }

@@ -9,6 +9,7 @@ import CampaignsPage from './pages/CampaignsPage';
 import CreateCampaignPage from './pages/CreateCampaignPage';
 import CampaignDetailPage from './pages/CampaignDetailPage';
 import AdminPage from './pages/AdminPage';
+import TokensPage from './pages/TokensPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
@@ -56,6 +57,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <CampaignDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tokens"
+        element={
+          <ProtectedRoute>
+            <TokensPage />
           </ProtectedRoute>
         }
       />

@@ -2,7 +2,6 @@ import api from './axios';
 import type { User } from '../types/user';
 import type { Client } from '../types/client';
 import type { Campaign } from '../types/campaign';
-import type { ApiResponse } from '../types/api';
 
 interface AdminDashboard {
   totalUsers: number;
@@ -14,27 +13,27 @@ interface AdminDashboard {
 }
 
 export const adminApi = {
-  getUsers: async (): Promise<ApiResponse<User[]>> => {
+  getUsers: async (): Promise<User[]> => {
     const { data } = await api.get('/admin/users');
     return data;
   },
 
-  getUser: async (id: string): Promise<ApiResponse<User>> => {
+  getUser: async (id: string): Promise<User> => {
     const { data } = await api.get(`/admin/users/${id}`);
     return data;
   },
 
-  getClients: async (): Promise<ApiResponse<Client[]>> => {
+  getClients: async (): Promise<Client[]> => {
     const { data } = await api.get('/admin/clients');
     return data;
   },
 
-  getCampaigns: async (): Promise<ApiResponse<Campaign[]>> => {
+  getCampaigns: async (): Promise<Campaign[]> => {
     const { data } = await api.get('/admin/campaigns');
     return data;
   },
 
-  getDashboard: async (): Promise<ApiResponse<AdminDashboard>> => {
+  getDashboard: async (): Promise<AdminDashboard> => {
     const { data } = await api.get('/admin/dashboard');
     return data;
   },

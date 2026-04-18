@@ -1,5 +1,4 @@
 import api from './axios';
-import type { ApiResponse } from '../types/api';
 
 interface DashboardStats {
   totalCampaigns: number;
@@ -22,17 +21,17 @@ interface Insights {
 }
 
 export const analyticsApi = {
-  getInsights: async (): Promise<ApiResponse<Insights>> => {
+  getInsights: async (): Promise<Insights> => {
     const { data } = await api.get('/analytics/insights');
     return data;
   },
 
-  getDashboard: async (): Promise<ApiResponse<DashboardStats>> => {
+  getDashboard: async (): Promise<DashboardStats> => {
     const { data } = await api.get('/analytics/dashboard');
     return data;
   },
 
-  getTimeline: async (): Promise<ApiResponse<TimelinePoint[]>> => {
+  getTimeline: async (): Promise<TimelinePoint[]> => {
     const { data } = await api.get('/analytics/timeline');
     return data;
   },

@@ -6,20 +6,14 @@ import { clientsApi } from '../api/clients.api';
 export function useClients() {
   return useQuery({
     queryKey: ['clients'],
-    queryFn: async () => {
-      const res = await clientsApi.getClients();
-      return res.data;
-    },
+    queryFn: clientsApi.getClients,
   });
 }
 
 export function useClient(id: string) {
   return useQuery({
     queryKey: ['clients', id],
-    queryFn: async () => {
-      const res = await clientsApi.getClient(id);
-      return res.data;
-    },
+    queryFn: () => clientsApi.getClient(id),
     enabled: !!id,
   });
 }

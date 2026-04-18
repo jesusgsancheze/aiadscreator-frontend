@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Check, Loader2 } from 'lucide-react';
+import { Sparkles, Check, Loader2, AlertTriangle, CheckCircle, Coins } from 'lucide-react';
 import Button from '../../ui/Button';
 import Spinner from '../../ui/Spinner';
 import GeneratedImagesGrid from '../GeneratedImagesGrid';
 import Card from '../../ui/Card';
 import { useCreateCampaign, useCampaign, useGenerateContent, useSelectImage } from '../../../hooks/useCampaigns';
+import { useTokenBalance, useCampaignCost } from '../../../hooks/useTokens';
 import type { SocialMedia } from '../../../types/campaign';
 
 interface Step5Props {
@@ -16,9 +18,11 @@ interface Step5Props {
     productImage: File | null;
     campaignDescription: string;
     imageDescription: string;
+    imageCount: number;
     campaignId: string | null;
   };
   onCampaignCreated: (id: string) => void;
+  onNext: () => void;
 }
 
 type GenerationPhase = 'idle' | 'creating' | 'generating' | 'polling' | 'done' | 'error';
@@ -30,7 +34,7 @@ const steps = [
   'creatingImages',
 ];
 
-export default function Step5AIGeneration({ state, onCampaignCreated }: Step5Props) {
+export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: Step5Props) {
   const { t } = useTranslation();
   const [phase, setPhase] = useState<GenerationPhase>(state.campaignId ? 'polling' : 'idle');
   const [currentStep, setCurrentStep] = useState(0);
@@ -40,6 +44,12 @@ export default function Step5AIGeneration({ state, onCampaignCreated }: Step5Pro
   const generateContent = useGenerateContent();
   const selectImage = useSelectImage();
   const { data: campaign, refetch } = useCampaign(campaignId || '');
+  const { data: balanceData } = useTokenBalance();
+  const { data: costData } = useCampaignCost(state.imageCount);
+
+  const balance = balanceData?.balance ?? 0;
+  const totalCost = costData?.total ?? 0;
+  const hasEnoughTokens = balance >= totalCost;
 
   // Animate through generation steps
   useEffect(() => {
@@ -77,12 +87,13 @@ export default function Step5AIGeneration({ state, onCampaignCreated }: Step5Pro
       formData.append('clientId', state.clientId!);
       formData.append('campaignDescription', state.campaignDescription);
       formData.append('imageDescription', state.imageDescription);
+      formData.append('imageCount', String(state.imageCount));
       if (state.productImage) {
         formData.append('productImage', state.productImage);
       }
 
       const res = await createCampaign.mutateAsync(formData);
-      const newId = res.data._id;
+      const newId = res._id;
       setCampaignId(newId);
       onCampaignCreated(newId);
 
@@ -110,6 +121,59 @@ export default function Step5AIGeneration({ state, onCampaignCreated }: Step5Pro
           <p className="text-sm text-slate-500 mt-2">{t('campaigns.step5Desc')}</p>
         </div>
 
+        {/* Token cost breakdown */}
+        {costData && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-sm mx-auto mb-6"
+          >
+            <Card className="text-left">
+              <h4 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                <Coins className="h-4 w-4 text-brand-primary" />
+                {t('tokens.costBreakdown')}
+              </h4>
+              <div className="space-y-1.5 text-sm">
+                <div className="flex justify-between text-slate-600">
+                  <span>{t('tokens.copyCaption')}</span>
+                  <span className="font-medium">{costData.copyCaption} tokens</span>
+                </div>
+                <div className="flex justify-between text-slate-600">
+                  <span>{t('tokens.perImage')} ({state.imageCount})</span>
+                  <span className="font-medium">{costData.images} tokens</span>
+                </div>
+                <div className="flex justify-between text-slate-900 font-semibold border-t border-slate-100 pt-1.5">
+                  <span>{t('tokens.total')}</span>
+                  <span>{costData.total} tokens</span>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-2 text-sm">
+                <span className="text-slate-500">{t('tokens.currentBalance')}:</span>
+                <span className="font-bold gradient-brand-text">{balance.toLocaleString()}</span>
+              </div>
+              {hasEnoughTokens ? (
+                <div className="mt-2 flex items-center gap-1.5 text-emerald-600 text-xs">
+                  <CheckCircle className="h-3.5 w-3.5" />
+                  {t('tokens.enoughTokens')}
+                </div>
+              ) : (
+                <div className="mt-2">
+                  <div className="flex items-center gap-1.5 text-red-500 text-xs">
+                    <AlertTriangle className="h-3.5 w-3.5" />
+                    {t('tokens.insufficientTokensHint', { count: totalCost - balance })}
+                  </div>
+                  <Link
+                    to="/tokens"
+                    className="text-xs font-medium text-brand-primary hover:underline mt-1 inline-block"
+                  >
+                    {t('tokens.buyTokens')} &rarr;
+                  </Link>
+                </div>
+              )}
+            </Card>
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -118,7 +182,7 @@ export default function Step5AIGeneration({ state, onCampaignCreated }: Step5Pro
           <div className="p-6 rounded-3xl gradient-brand mb-6">
             <Sparkles className="h-12 w-12 text-white" />
           </div>
-          <Button size="lg" onClick={startGeneration}>
+          <Button size="lg" onClick={startGeneration} disabled={!hasEnoughTokens}>
             <Sparkles className="h-4 w-4" />
             {t('campaigns.startGeneration')}
           </Button>
@@ -177,6 +241,12 @@ export default function Step5AIGeneration({ state, onCampaignCreated }: Step5Pro
               />
             </Card>
           )}
+
+          <div className="flex justify-end pt-4">
+            <Button size="lg" onClick={onNext}>
+              {t('common.next')}
+            </Button>
+          </div>
         </div>
       </div>
     );

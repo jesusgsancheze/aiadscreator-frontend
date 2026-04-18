@@ -13,7 +13,7 @@ export function useLogin() {
   return useMutation({
     mutationFn: authApi.login,
     onSuccess: (res) => {
-      setAuth(res.data.user, res.data.token);
+      setAuth(res.user, res.accessToken);
       toast.success(t('common.success'));
       navigate('/dashboard');
     },
@@ -65,9 +65,9 @@ export function useProfile() {
     queryFn: async () => {
       const res = await authApi.getProfile();
       if (token) {
-        setAuth(res.data, token);
+        setAuth(res, token);
       }
-      return res.data;
+      return res;
     },
     enabled: !!token,
     retry: false,
@@ -81,7 +81,7 @@ export function useUpdateLanguage() {
   return useMutation({
     mutationFn: authApi.updateLanguage,
     onSuccess: (res) => {
-      updateUser({ language: res.data.language });
+      updateUser({ language: res.language });
       queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });

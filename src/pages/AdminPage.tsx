@@ -1,21 +1,23 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Users, Building2, Megaphone } from 'lucide-react';
+import { LayoutDashboard, Users, Building2, Megaphone, Coins } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import AdminDashboard from '../components/admin/AdminDashboard';
 import AdminUsersList from '../components/admin/AdminUsersList';
 import AdminClientsList from '../components/admin/AdminClientsList';
 import AdminCampaignsList from '../components/admin/AdminCampaignsList';
+import AdminTokensPanel from '../components/admin/AdminTokensPanel';
 import { cn } from '../lib/utils';
 
-type Tab = 'dashboard' | 'users' | 'clients' | 'campaigns';
+type Tab = 'dashboard' | 'users' | 'clients' | 'campaigns' | 'tokens';
 
 const tabs: { key: Tab; icon: React.ElementType }[] = [
   { key: 'dashboard', icon: LayoutDashboard },
   { key: 'users', icon: Users },
   { key: 'clients', icon: Building2 },
   { key: 'campaigns', icon: Megaphone },
+  { key: 'tokens', icon: Coins },
 ];
 
 export default function AdminPage() {
@@ -59,6 +61,7 @@ export default function AdminPage() {
         {activeTab === 'users' && <AdminUsersList />}
         {activeTab === 'clients' && <AdminClientsList />}
         {activeTab === 'campaigns' && <AdminCampaignsList />}
+        {activeTab === 'tokens' && <AdminTokensPanel />}
       </motion.div>
     </AppLayout>
   );

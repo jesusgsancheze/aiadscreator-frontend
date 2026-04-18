@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Pencil, Trash2, Building2 } from 'lucide-react';
+import { Pencil, Trash2, Building2, Share } from 'lucide-react';
 import Card from '../ui/Card';
+import { useMetaConnection } from '../../hooks/useMeta';
 import type { Client } from '../../types/client';
 import { getImageUrl, truncate } from '../../lib/utils';
 
@@ -13,6 +14,8 @@ interface ClientCardProps {
 
 export default function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
   const { t } = useTranslation();
+  const { data: metaConnection } = useMetaConnection(client._id);
+  const hasMetaConnection = !!metaConnection && metaConnection.isActive;
 
   return (
     <motion.div
@@ -34,7 +37,15 @@ export default function ClientCard({ client, onEdit, onDelete }: ClientCardProps
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h3 className="text-base font-semibold text-slate-900 truncate">{client.name}</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-base font-semibold text-slate-900 truncate">{client.name}</h3>
+              {hasMetaConnection && (
+                <span className="flex items-center gap-1 text-emerald-600" title={t('meta.connected')}>
+                  <Share className="h-3.5 w-3.5" />
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+              )}
+            </div>
             <p className="text-sm text-slate-500 mt-1">{truncate(client.description, 80)}</p>
           </div>
         </div>
