@@ -61,7 +61,7 @@ export const tokensApi = {
   grantTokens: async (payload: {
     userId: string;
     tokens: number;
-    note?: string;
+    adminNote?: string;
   }): Promise<TokenTransaction> => {
     const { data } = await api.post('/tokens/admin/grant', payload);
     return data;

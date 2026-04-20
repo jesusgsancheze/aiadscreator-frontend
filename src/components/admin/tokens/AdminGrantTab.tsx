@@ -18,7 +18,7 @@ export default function AdminGrantTab() {
   const handleGrant = () => {
     if (!userId || !tokens) return;
     grant.mutate(
-      { userId, tokens: parseInt(tokens), note: note || undefined },
+      { userId, tokens: parseInt(tokens), adminNote: note || undefined },
       {
         onSuccess: () => {
           setUserId('');
