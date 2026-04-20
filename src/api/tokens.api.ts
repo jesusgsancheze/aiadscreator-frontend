@@ -85,6 +85,11 @@ export const tokensApi = {
   },
 
   getPaymentMethods: async (): Promise<PaymentMethodConfig[]> => {
+    const { data } = await api.get('/tokens/payment-methods');
+    return data;
+  },
+
+  getAdminPaymentMethods: async (): Promise<PaymentMethodConfig[]> => {
     const { data } = await api.get('/tokens/admin/payment-methods');
     return data;
   },

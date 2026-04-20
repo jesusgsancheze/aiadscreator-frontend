@@ -8,7 +8,7 @@ import FileUpload from '../../ui/FileUpload';
 import Spinner from '../../ui/Spinner';
 import { cn } from '../../../lib/utils';
 import {
-  usePaymentMethods,
+  useAdminPaymentMethods,
   useUpdatePaymentMethod,
 } from '../../../hooks/useTokens';
 import type { PaymentMethodType, PaymentMethodConfig } from '../../../types/tokens';
@@ -26,7 +26,7 @@ const defaultConfigs: Record<PaymentMethodType, Record<string, string>> = {
 
 export default function AdminPaymentMethodsTab() {
   const { t } = useTranslation();
-  const { data: methods, isLoading } = usePaymentMethods();
+  const { data: methods, isLoading } = useAdminPaymentMethods();
   const update = useUpdatePaymentMethod();
 
   const [forms, setForms] = useState<Record<PaymentMethodType, MethodFormState>>({

@@ -114,6 +114,13 @@ export function usePaymentMethods() {
   });
 }
 
+export function useAdminPaymentMethods() {
+  return useQuery({
+    queryKey: ['admin-payment-methods'],
+    queryFn: tokensApi.getAdminPaymentMethods,
+  });
+}
+
 export function useUpdatePaymentMethod() {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -123,6 +130,7 @@ export function useUpdatePaymentMethod() {
       tokensApi.updatePaymentMethod(type, { isActive, config }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['payment-methods'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-payment-methods'] });
       toast.success(t('common.success'));
     },
     onError: (error: any) => {
