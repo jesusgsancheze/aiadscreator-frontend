@@ -228,7 +228,8 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {(campaign.status === 'ready' || campaign.status === 'published') && (
+          {(campaign.status === 'ready' || campaign.status === 'published') &&
+            (campaign.socialMedia === 'facebook' || campaign.socialMedia === 'instagram') && (
             <Button
               variant="primary"
               size="sm"
