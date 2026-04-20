@@ -17,6 +17,8 @@ export interface TokenTransaction {
   reviewedBy: string | null;
   reviewedAt: string | null;
   packageId: string | null;
+  description: string | null;
+  aiAgent: string | null;
   createdAt: string;
   updatedAt: string;
 }

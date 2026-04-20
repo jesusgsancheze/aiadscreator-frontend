@@ -154,8 +154,18 @@ export default function AdminTransactionsTab() {
                         ? `${(tx.userId as any).firstName ?? ''} ${(tx.userId as any).lastName ?? ''}`.trim() || (tx.userId as any)._id
                         : String(tx.userId)}
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {t(`tokens.${tx.type}`)}
+                    <td className="px-4 py-3">
+                      <div className="text-slate-700 font-medium text-sm">
+                        {t(`tokens.${tx.type}`)}
+                      </div>
+                      {tx.description && (
+                        <div className="text-xs text-slate-400 mt-0.5">{tx.description}</div>
+                      )}
+                      {tx.aiAgent && (
+                        <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-brand-primary/10 text-brand-primary capitalize">
+                          {tx.aiAgent}
+                        </span>
+                      )}
                     </td>
                     <td className={cn(
                       'px-4 py-3 text-right font-semibold',
