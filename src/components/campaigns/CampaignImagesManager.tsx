@@ -161,14 +161,26 @@ export default function CampaignImagesManager({
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
-                <a
-                  href={getImageUrl(image)}
-                  download={`campaign-image-${index + 1}.png`}
-                  onClick={(e) => e.stopPropagation()}
+                <button
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    try {
+                      const res = await fetch(getImageUrl(image));
+                      const blob = await res.blob();
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `campaign-image-${index + 1}.png`;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                      URL.revokeObjectURL(url);
+                    } catch { /* ignore */ }
+                  }}
                   className="h-7 w-7 rounded-full bg-slate-800/80 text-white flex items-center justify-center hover:bg-slate-900 shadow-md"
                 >
                   <Download className="h-3.5 w-3.5" />
-                </a>
+                </button>
               </div>
             </motion.div>
           ))}
