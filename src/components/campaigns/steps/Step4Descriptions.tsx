@@ -12,7 +12,7 @@ const textAgents: { id: TextAgent; label: string; desc: string }[] = [
 const imageAgents: { id: ImageAgent; label: string; desc: string }[] = [
   { id: 'gemini', label: 'Gemini', desc: 'Google' },
   { id: 'flux', label: 'Flux', desc: 'Black Forest Labs' },
-  { id: 'wan', label: 'Wan 2.7', desc: 'Alibaba' },
+  { id: 'gpt_image', label: 'GPT-5 Image', desc: 'OpenAI' },
 ];
 
 interface Step4Props {

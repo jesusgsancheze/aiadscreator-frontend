@@ -2,7 +2,7 @@ import type { Client } from './client';
 
 export type SocialMedia = 'instagram' | 'tiktok' | 'facebook' | 'whatsapp' | 'google_ads';
 export type TextAgent = 'claude' | 'grok';
-export type ImageAgent = 'gemini' | 'flux' | 'wan';
+export type ImageAgent = 'gemini' | 'flux' | 'gpt_image';
 export type CampaignStatus = 'draft' | 'generating' | 'ready' | 'published' | 'failed';
 
 export interface CampaignAnalytics {
