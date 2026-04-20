@@ -209,6 +209,7 @@
     "paymentMethods": "Payment Methods",
     "settings": "Settings",
     "notificationEmails": "Notification Emails",
+    "noEmails": "No notification emails configured",
     "bcvRate": "BCV Rate",
     "costBreakdown": "Token Cost Breakdown",
     "copyCaption": "Copy & Caption",

@@ -209,6 +209,7 @@
     "paymentMethods": "Metodos de Pago",
     "settings": "Configuracion",
     "notificationEmails": "Correos de Notificacion",
+    "noEmails": "No hay correos de notificacion configurados",
     "bcvRate": "Tasa BCV",
     "costBreakdown": "Desglose de Costo en Tokens",
     "copyCaption": "Texto y Descripcion",
