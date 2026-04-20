@@ -150,7 +150,9 @@ export default function AdminTransactionsTab() {
                     <td className="px-4 py-3 text-slate-700 font-medium">
                       {tx.user
                         ? `${tx.user.firstName} ${tx.user.lastName}`
-                        : tx.userId}
+                        : typeof tx.userId === 'object' && tx.userId !== null
+                        ? `${(tx.userId as any).firstName ?? ''} ${(tx.userId as any).lastName ?? ''}`.trim() || (tx.userId as any)._id
+                        : String(tx.userId)}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {t(`tokens.${tx.type}`)}
