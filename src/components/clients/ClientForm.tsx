@@ -107,10 +107,6 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
           />
         </div>
 
-        {client && (
-          <ClientMetaConnection clientId={client._id} />
-        )}
-
         <div className="flex justify-end gap-3 pt-4">
           <Button variant="ghost" type="button" onClick={onClose}>
             {t('common.cancel')}
@@ -120,6 +116,10 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
           </Button>
         </div>
       </form>
+
+      {client && (
+        <ClientMetaConnection clientId={client._id} />
+      )}
     </Modal>
   );
 }

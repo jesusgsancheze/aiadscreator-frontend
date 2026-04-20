@@ -14,7 +14,7 @@ interface ClientMetaConnectionProps {
 
 export default function ClientMetaConnection({ clientId }: ClientMetaConnectionProps) {
   const { t } = useTranslation();
-  const { data: connection, isLoading, isError } = useMetaConnection(clientId);
+  const { data: connection, isLoading } = useMetaConnection(clientId);
   const deleteConnection = useDeleteMetaConnection();
   const [formOpen, setFormOpen] = useState(false);
   const [editConnection, setEditConnection] = useState<MetaConnection | null>(null);
@@ -33,18 +33,15 @@ export default function ClientMetaConnection({ clientId }: ClientMetaConnectionP
     setEditConnection(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-4">
-        <Spinner size="sm" />
-      </div>
-    );
-  }
-
   return (
     <div className="mt-4">
       <h4 className="text-sm font-semibold text-slate-700 mb-3">Meta</h4>
-      {connection && !isError ? (
+
+      {isLoading ? (
+        <div className="flex justify-center py-4">
+          <Spinner size="sm" />
+        </div>
+      ) : connection ? (
         <MetaConnectionCard
           connection={connection}
           onEdit={handleEdit}
@@ -54,7 +51,12 @@ export default function ClientMetaConnection({ clientId }: ClientMetaConnectionP
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => setFormOpen(true)}
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setFormOpen(true);
+          }}
         >
           <Share className="h-4 w-4" />
           {t('meta.connectToMeta')}

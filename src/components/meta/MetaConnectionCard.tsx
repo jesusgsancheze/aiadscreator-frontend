@@ -82,6 +82,7 @@ export default function MetaConnectionCard({ connection, onEdit, onDelete }: Met
           <Button
             variant="ghost"
             size="sm"
+            type="button"
             onClick={handleVerify}
             loading={verifyConnection.isPending}
           >
@@ -89,6 +90,7 @@ export default function MetaConnectionCard({ connection, onEdit, onDelete }: Met
             {t('meta.verify')}
           </Button>
           <button
+            type="button"
             onClick={() => onEdit(connection)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all"
           >
@@ -96,6 +98,7 @@ export default function MetaConnectionCard({ connection, onEdit, onDelete }: Met
             {t('common.edit')}
           </button>
           <button
+            type="button"
             onClick={handleDelete}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all"
           >
