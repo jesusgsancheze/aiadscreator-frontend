@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check, Camera, Music, Share, MessageCircle, Search, Pencil, X } from 'lucide-react';
+import { Check, Pencil, X } from 'lucide-react';
 import Card from '../../ui/Card';
 import Button from '../../ui/Button';
 import { useCampaign, useUpdateCampaign } from '../../../hooks/useCampaigns';
@@ -10,13 +10,14 @@ import { getImageUrl } from '../../../lib/utils';
 import GeneratedImagesGrid from '../GeneratedImagesGrid';
 import { useSelectImage } from '../../../hooks/useCampaigns';
 import type { SocialMedia } from '../../../types/campaign';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
-  instagram: <Camera className="h-5 w-5" />,
-  tiktok: <Music className="h-5 w-5" />,
-  facebook: <Share className="h-5 w-5" />,
-  whatsapp: <MessageCircle className="h-5 w-5" />,
-  google_ads: <Search className="h-5 w-5" />,
+  instagram: <InstagramIcon className="h-5 w-5" />,
+  tiktok: <TikTokIcon className="h-5 w-5" />,
+  facebook: <FacebookIcon className="h-5 w-5" />,
+  whatsapp: <WhatsAppIcon className="h-5 w-5" />,
+  google_ads: <GoogleAdsIcon className="h-5 w-5" />,
 };
 
 interface InlineEditProps {

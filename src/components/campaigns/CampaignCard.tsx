@@ -1,20 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Camera, Music, Share, MessageCircle, Calendar, Pencil, Trash2, Search } from 'lucide-react';
+import { Calendar, Pencil, Trash2 } from 'lucide-react';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import type { Campaign, CampaignStatus, SocialMedia } from '../../types/campaign';
 import type { Client } from '../../types/client';
 import { truncate, formatDate } from '../../lib/utils';
 import { useDeleteCampaign } from '../../hooks/useCampaigns';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
-  instagram: <Camera className="h-4 w-4" />,
-  tiktok: <Music className="h-4 w-4" />,
-  facebook: <Share className="h-4 w-4" />,
-  whatsapp: <MessageCircle className="h-4 w-4" />,
-  google_ads: <Search className="h-4 w-4" />,
+  instagram: <InstagramIcon className="h-4 w-4" />,
+  tiktok: <TikTokIcon className="h-4 w-4" />,
+  facebook: <FacebookIcon className="h-4 w-4" />,
+  whatsapp: <WhatsAppIcon className="h-4 w-4" />,
+  google_ads: <GoogleAdsIcon className="h-4 w-4" />,
 };
 
 const socialColors: Record<SocialMedia, string> = {

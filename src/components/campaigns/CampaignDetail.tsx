@@ -4,10 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
-  Camera,
-  Music,
-  Share,
-  MessageCircle,
   Link as LinkIcon,
   Trash2,
   Copy,
@@ -18,7 +14,6 @@ import {
   X,
   RefreshCw,
   Send,
-  Search,
   ClipboardCopy,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -40,13 +35,14 @@ import {
 } from '../../hooks/useCampaigns';
 import { useMetaInsights } from '../../hooks/useMeta';
 import { getImageUrl } from '../../lib/utils';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
-  instagram: <Camera className="h-5 w-5" />,
-  tiktok: <Music className="h-5 w-5" />,
-  facebook: <Share className="h-5 w-5" />,
-  whatsapp: <MessageCircle className="h-5 w-5" />,
-  google_ads: <Search className="h-5 w-5" />,
+  instagram: <InstagramIcon className="h-5 w-5" />,
+  tiktok: <TikTokIcon className="h-5 w-5" />,
+  facebook: <FacebookIcon className="h-5 w-5" />,
+  whatsapp: <WhatsAppIcon className="h-5 w-5" />,
+  google_ads: <GoogleAdsIcon className="h-5 w-5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {

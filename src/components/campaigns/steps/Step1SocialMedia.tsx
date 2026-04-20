@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Camera, Music, Share, MessageCircle, Search } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import type { SocialMedia } from '../../../types/campaign';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../../icons/SocialIcons';
 
-const platforms: { id: SocialMedia; icon: React.ElementType; color: string; bg: string; label: string }[] = [
-  { id: 'instagram', icon: Camera, color: 'text-pink-500', bg: 'bg-gradient-to-br from-purple-500 to-pink-500', label: 'Instagram' },
-  { id: 'tiktok', icon: Music, color: 'text-slate-900', bg: 'bg-slate-900', label: 'TikTok' },
-  { id: 'facebook', icon: Share, color: 'text-blue-600', bg: 'bg-blue-600', label: 'Facebook' },
-  { id: 'whatsapp', icon: MessageCircle, color: 'text-green-500', bg: 'bg-green-500', label: 'WhatsApp' },
-  { id: 'google_ads', icon: Search, color: 'text-yellow-500', bg: 'bg-gradient-to-br from-blue-500 via-red-500 to-yellow-500', label: 'Google Ads' },
+const platforms: { id: SocialMedia; icon: React.ElementType; bg: string; label: string }[] = [
+  { id: 'instagram', icon: InstagramIcon, bg: 'bg-gradient-to-br from-purple-500 to-pink-500', label: 'Instagram' },
+  { id: 'tiktok', icon: TikTokIcon, bg: 'bg-slate-900', label: 'TikTok' },
+  { id: 'facebook', icon: FacebookIcon, bg: 'bg-blue-600', label: 'Facebook' },
+  { id: 'whatsapp', icon: WhatsAppIcon, bg: 'bg-green-500', label: 'WhatsApp' },
+  { id: 'google_ads', icon: GoogleAdsIcon, bg: 'bg-white border border-slate-200', label: 'Google Ads' },
 ];
 
 interface Step1Props {
