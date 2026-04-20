@@ -8,6 +8,8 @@ export function useTokenBalance() {
   return useQuery({
     queryKey: ['token-balance'],
     queryFn: tokensApi.getBalance,
+    refetchInterval: 30000,
+    refetchOnWindowFocus: true,
   });
 }
 
@@ -92,6 +94,8 @@ export function useReviewTransaction() {
       tokensApi.reviewTransaction(id, { status, adminNote }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['token-balance'] });
+      queryClient.invalidateQueries({ queryKey: ['user-transactions'] });
       toast.success(t('common.success'));
     },
     onError: (error: any) => {
