@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, X, Plus, Save } from 'lucide-react';
 import Card from '../../ui/Card';
@@ -17,28 +17,34 @@ export default function AdminSettingsTab() {
 
   const [emails, setEmails] = useState<string[]>([]);
   const [newEmail, setNewEmail] = useState('');
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (settingsData?.value) {
-      setEmails(settingsData.value);
+    if (!initialized && settingsData) {
+      const saved = Array.isArray(settingsData?.value) ? settingsData.value : [];
+      setEmails(saved);
+      setInitialized(true);
     }
-  }, [settingsData]);
+  }, [settingsData, initialized]);
 
   const addEmail = () => {
     const email = newEmail.trim();
     if (email && !emails.includes(email)) {
-      setEmails([...emails, email]);
+      const updated = [...emails, email];
+      setEmails(updated);
       setNewEmail('');
     }
   };
 
   const removeEmail = (email: string) => {
-    setEmails(emails.filter((e) => e !== email));
+    const updated = emails.filter((e) => e !== email);
+    setEmails(updated);
   };
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
+    console.log('Saving notification emails:', emails);
     updateSettings.mutate({ key: 'notificationEmails', value: emails });
-  };
+  }, [emails, updateSettings]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -65,6 +71,9 @@ export default function AdminSettingsTab() {
       <div className="space-y-4">
         {/* Email tags */}
         <div className="flex flex-wrap gap-2 min-h-[40px]">
+          {emails.length === 0 && (
+            <p className="text-sm text-slate-400">{t('tokens.noEmails') || 'No notification emails configured'}</p>
+          )}
           {emails.map((email) => (
             <span
               key={email}
@@ -106,7 +115,7 @@ export default function AdminSettingsTab() {
           className="w-full"
         >
           <Save className="h-4 w-4" />
-          {t('common.save')}
+          {t('common.save')} ({emails.length} {emails.length === 1 ? 'email' : 'emails'})
         </Button>
       </div>
     </Card>
