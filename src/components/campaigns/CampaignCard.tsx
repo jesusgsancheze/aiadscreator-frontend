@@ -93,8 +93,11 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
           <Badge variant={statusVariant[campaign.status]}>{campaign.status}</Badge>
         </div>
 
-        <p className="text-sm text-slate-600 mb-3">
-          {truncate(campaign.campaignDescription, 100)}
+        <h4 className="text-sm font-semibold text-slate-900 mb-1">
+          {campaign.title || truncate(campaign.campaignDescription, 50)}
+        </h4>
+        <p className="text-xs text-slate-500 mb-3">
+          {truncate(campaign.campaignDescription, 80)}
         </p>
 
         <div className="flex items-center justify-between pt-3 border-t border-slate-50">

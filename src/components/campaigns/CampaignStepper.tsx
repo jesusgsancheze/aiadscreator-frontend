@@ -20,6 +20,7 @@ interface CampaignState {
   clientName: string;
   productImages: File[];
   productImagePreviews: string[];
+  title: string;
   campaignDescription: string;
   imageDescription: string;
   imageCount: number;
@@ -37,7 +38,7 @@ type CampaignAction =
   | { type: 'SET_IMAGES'; files: File[]; previews: string[] }
   | { type: 'ADD_IMAGES'; files: File[]; previews: string[] }
   | { type: 'REMOVE_IMAGE'; index: number }
-  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number; textAgent: TextAgent; imagePromptAgent: TextAgent; imageAgent: ImageAgent; preserveProduct: boolean }
+  | { type: 'SET_DESCRIPTIONS'; title: string; campaignDescription: string; imageDescription: string; imageCount: number; textAgent: TextAgent; imagePromptAgent: TextAgent; imageAgent: ImageAgent; preserveProduct: boolean }
   | { type: 'SET_CAMPAIGN_ID'; campaignId: string };
 
 function reducer(state: CampaignState, action: CampaignAction): CampaignState {
@@ -63,6 +64,7 @@ function reducer(state: CampaignState, action: CampaignAction): CampaignState {
     case 'SET_DESCRIPTIONS':
       return {
         ...state,
+        title: action.title,
         campaignDescription: action.campaignDescription,
         imageDescription: action.imageDescription,
         imageCount: action.imageCount,
@@ -85,6 +87,7 @@ const initialState: CampaignState = {
   clientName: '',
   productImages: [],
   productImagePreviews: [],
+  title: '',
   campaignDescription: '',
   imageDescription: '',
   imageCount: 3,
@@ -114,7 +117,7 @@ export default function CampaignStepper() {
       case 1: return !!state.socialMedia;
       case 2: return !!state.clientId;
       case 3: return state.productImages.length > 0;
-      case 4: return !!state.campaignDescription && !!state.imageDescription;
+      case 4: return !!state.title && !!state.campaignDescription && !!state.imageDescription;
       default: return true;
     }
   };
@@ -213,6 +216,7 @@ export default function CampaignStepper() {
           )}
           {state.step === 4 && (
             <Step4Descriptions
+              title={state.title}
               campaignDescription={state.campaignDescription}
               imageDescription={state.imageDescription}
               imageCount={state.imageCount}
@@ -220,9 +224,10 @@ export default function CampaignStepper() {
               imagePromptAgent={state.imagePromptAgent}
               imageAgent={state.imageAgent}
               preserveProduct={state.preserveProduct}
-              onChange={(cd, id, ic, ta, ipa, ia, pp) => {
+              onChange={(ti, cd, id, ic, ta, ipa, ia, pp) => {
                 dispatch({
                   type: 'SET_DESCRIPTIONS',
+                  title: ti,
                   campaignDescription: cd,
                   imageDescription: id,
                   imageCount: ic,

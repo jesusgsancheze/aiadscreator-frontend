@@ -17,6 +17,7 @@ const imageAgents: { id: ImageAgent; label: string; desc: string }[] = [
 ];
 
 interface Step4Props {
+  title: string;
   campaignDescription: string;
   imageDescription: string;
   imageCount: number;
@@ -25,6 +26,7 @@ interface Step4Props {
   imageAgent: ImageAgent;
   preserveProduct: boolean;
   onChange: (
+    title: string,
     campaignDesc: string,
     imageDesc: string,
     imageCount: number,
@@ -36,6 +38,7 @@ interface Step4Props {
 }
 
 export default function Step4Descriptions({
+  title,
   campaignDescription,
   imageDescription,
   imageCount,
@@ -49,10 +52,11 @@ export default function Step4Descriptions({
   const { data: costData } = useCampaignCost(imageCount);
 
   const update = (partial: Partial<{
-    cd: string; id: string; ic: number;
+    ti: string; cd: string; id: string; ic: number;
     ta: TextAgent; ipa: TextAgent; ia: ImageAgent; pp: boolean;
   }>) => {
     onChange(
+      partial.ti ?? title,
       partial.cd ?? campaignDescription,
       partial.id ?? imageDescription,
       partial.ic ?? imageCount,
@@ -71,6 +75,18 @@ export default function Step4Descriptions({
       </div>
 
       <div className="max-w-2xl mx-auto space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            {t('campaigns.campaignTitle')}
+          </label>
+          <input
+            value={title}
+            onChange={(e) => update({ ti: e.target.value })}
+            placeholder={t('campaigns.campaignTitlePlaceholder')}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all duration-200"
+          />
+        </div>
+
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">
             {t('campaigns.campaignDescription')}

@@ -51,6 +51,8 @@
     "maxReferenceImages": "Maximum 10 images",
     "addMoreImages": "Ajouter plus",
     "removeImage": "Supprimer l'image",
+    "campaignTitle": "Titre de la Campagne",
+    "campaignTitlePlaceholder": "Entrez un nom pour cette campagne...",
     "campaignDescription": "Description de la Campagne",
     "imageDescription": "Description de l'Image",
     "imageCount": "Nombre d'Images",

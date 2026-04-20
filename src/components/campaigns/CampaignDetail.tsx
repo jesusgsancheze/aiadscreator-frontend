@@ -207,14 +207,14 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
               <span className="p-2 rounded-lg gradient-brand text-white">
                 {socialIcons[campaign.socialMedia]}
               </span>
-              <h2 className="text-xl font-bold text-slate-900 capitalize">
-                {campaign.socialMedia}
+              <h2 className="text-xl font-bold text-slate-900">
+                {campaign.title || campaign.socialMedia}
               </h2>
               <Badge variant={statusVariant[campaign.status]}>{campaign.status}</Badge>
             </div>
-            {clientName && (
-              <p className="text-sm text-slate-500 mt-1 ml-14">{clientName}</p>
-            )}
+            <p className="text-sm text-slate-500 mt-1 ml-14">
+              {[clientName, campaign.socialMedia].filter(Boolean).join(' · ')}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">

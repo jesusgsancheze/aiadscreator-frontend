@@ -17,6 +17,7 @@ export interface CampaignAnalytics {
 
 export interface Campaign {
   _id: string;
+  title: string;
   socialMedia: SocialMedia;
   productImages: string[];
   campaignDescription: string;

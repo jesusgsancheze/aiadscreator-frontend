@@ -51,6 +51,8 @@
     "maxReferenceImages": "Maximo 10 imagenes",
     "addMoreImages": "Agregar mas",
     "removeImage": "Eliminar imagen",
+    "campaignTitle": "Titulo de la Campana",
+    "campaignTitlePlaceholder": "Ingresa un nombre para esta campana...",
     "campaignDescription": "Descripcion de la Campana",
     "imageDescription": "Descripcion de la Imagen",
     "imageCount": "Cantidad de Imagenes",
