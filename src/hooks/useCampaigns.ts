@@ -125,3 +125,91 @@ export function useUpdatePerformance() {
     },
   });
 }
+
+export function useRefineCopy() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, instructions }: { id: string; instructions: string }) =>
+      campaignsApi.refineCopy(id, instructions),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      queryClient.invalidateQueries({ queryKey: ['token-balance'] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useRefineCaption() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, instructions }: { id: string; instructions: string }) =>
+      campaignsApi.refineCaption(id, instructions),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      queryClient.invalidateQueries({ queryKey: ['token-balance'] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useGenerateMoreImages() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, count, instructions }: { id: string; count: number; instructions?: string }) =>
+      campaignsApi.generateMoreImages(id, count, instructions),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      queryClient.invalidateQueries({ queryKey: ['token-balance'] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useDeleteCampaignImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, imageIndex }: { id: string; imageIndex: number }) =>
+      campaignsApi.deleteImage(id, imageIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useUploadCampaignImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, file }: { id: string; file: File }) =>
+      campaignsApi.uploadImage(id, file),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}

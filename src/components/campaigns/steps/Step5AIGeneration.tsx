@@ -15,7 +15,7 @@ interface Step5Props {
   state: {
     socialMedia: SocialMedia | null;
     clientId: string | null;
-    productImage: File | null;
+    productImages: File[];
     campaignDescription: string;
     imageDescription: string;
     imageCount: number;
@@ -88,9 +88,9 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
       formData.append('campaignDescription', state.campaignDescription);
       formData.append('imageDescription', state.imageDescription);
       formData.append('imageCount', String(state.imageCount));
-      if (state.productImage) {
-        formData.append('productImage', state.productImage);
-      }
+      state.productImages.forEach((file) => {
+        formData.append('productImages', file);
+      });
 
       const res = await createCampaign.mutateAsync(formData);
       const newId = res._id;

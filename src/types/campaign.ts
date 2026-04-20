@@ -1,6 +1,6 @@
 import type { Client } from './client';
 
-export type SocialMedia = 'instagram' | 'tiktok' | 'facebook' | 'whatsapp';
+export type SocialMedia = 'instagram' | 'tiktok' | 'facebook' | 'whatsapp' | 'google_ads';
 export type CampaignStatus = 'draft' | 'generating' | 'ready' | 'published' | 'failed';
 
 export interface CampaignAnalytics {
@@ -16,7 +16,7 @@ export interface CampaignAnalytics {
 export interface Campaign {
   _id: string;
   socialMedia: SocialMedia;
-  productImage: string;
+  productImages: string[];
   campaignDescription: string;
   imageDescription: string;
   imageCount: number;

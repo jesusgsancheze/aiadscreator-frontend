@@ -18,8 +18,8 @@ interface CampaignState {
   socialMedia: SocialMedia | null;
   clientId: string | null;
   clientName: string;
-  productImage: File | null;
-  productImagePreview: string | null;
+  productImages: File[];
+  productImagePreviews: string[];
   campaignDescription: string;
   imageDescription: string;
   imageCount: number;
@@ -30,7 +30,9 @@ type CampaignAction =
   | { type: 'SET_STEP'; step: number }
   | { type: 'SET_SOCIAL_MEDIA'; socialMedia: SocialMedia }
   | { type: 'SET_CLIENT'; clientId: string; clientName: string }
-  | { type: 'SET_IMAGE'; file: File; preview: string }
+  | { type: 'SET_IMAGES'; files: File[]; previews: string[] }
+  | { type: 'ADD_IMAGES'; files: File[]; previews: string[] }
+  | { type: 'REMOVE_IMAGE'; index: number }
   | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number }
   | { type: 'SET_CAMPAIGN_ID'; campaignId: string };
 
@@ -42,8 +44,18 @@ function reducer(state: CampaignState, action: CampaignAction): CampaignState {
       return { ...state, socialMedia: action.socialMedia };
     case 'SET_CLIENT':
       return { ...state, clientId: action.clientId, clientName: action.clientName };
-    case 'SET_IMAGE':
-      return { ...state, productImage: action.file, productImagePreview: action.preview };
+    case 'SET_IMAGES':
+      return { ...state, productImages: action.files, productImagePreviews: action.previews };
+    case 'ADD_IMAGES': {
+      const newImages = [...state.productImages, ...action.files].slice(0, 10);
+      const newPreviews = [...state.productImagePreviews, ...action.previews].slice(0, 10);
+      return { ...state, productImages: newImages, productImagePreviews: newPreviews };
+    }
+    case 'REMOVE_IMAGE': {
+      const filteredImages = state.productImages.filter((_, i) => i !== action.index);
+      const filteredPreviews = state.productImagePreviews.filter((_, i) => i !== action.index);
+      return { ...state, productImages: filteredImages, productImagePreviews: filteredPreviews };
+    }
     case 'SET_DESCRIPTIONS':
       return {
         ...state,
@@ -63,8 +75,8 @@ const initialState: CampaignState = {
   socialMedia: null,
   clientId: null,
   clientName: '',
-  productImage: null,
-  productImagePreview: null,
+  productImages: [],
+  productImagePreviews: [],
   campaignDescription: '',
   imageDescription: '',
   imageCount: 3,
@@ -89,7 +101,7 @@ export default function CampaignStepper() {
     switch (state.step) {
       case 1: return !!state.socialMedia;
       case 2: return !!state.clientId;
-      case 3: return !!state.productImage;
+      case 3: return state.productImages.length > 0;
       case 4: return !!state.campaignDescription && !!state.imageDescription;
       default: return true;
     }
@@ -178,9 +190,12 @@ export default function CampaignStepper() {
           )}
           {state.step === 3 && (
             <Step3UploadImage
-              preview={state.productImagePreview}
-              onFileSelect={(file, preview) => {
-                dispatch({ type: 'SET_IMAGE', file, preview });
+              previews={state.productImagePreviews}
+              onAddFiles={(files, previews) => {
+                dispatch({ type: 'ADD_IMAGES', files, previews });
+              }}
+              onRemove={(index) => {
+                dispatch({ type: 'REMOVE_IMAGE', index });
               }}
             />
           )}

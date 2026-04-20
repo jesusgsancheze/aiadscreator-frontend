@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check, Camera, Music, Share, MessageCircle, Pencil, X } from 'lucide-react';
+import { Check, Camera, Music, Share, MessageCircle, Search, Pencil, X } from 'lucide-react';
 import Card from '../../ui/Card';
 import Button from '../../ui/Button';
 import { useCampaign, useUpdateCampaign } from '../../../hooks/useCampaigns';
@@ -16,6 +16,7 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   tiktok: <Music className="h-5 w-5" />,
   facebook: <Share className="h-5 w-5" />,
   whatsapp: <MessageCircle className="h-5 w-5" />,
+  google_ads: <Search className="h-5 w-5" />,
 };
 
 interface InlineEditProps {
@@ -92,7 +93,7 @@ interface Step6Props {
     clientName: string;
     campaignDescription: string;
     imageDescription: string;
-    productImagePreview: string | null;
+    productImagePreviews: string[];
     campaignId: string | null;
   };
 }
@@ -151,14 +152,19 @@ export default function Step6Review({ state }: Step6Props) {
           </div>
         </Card>
 
-        {state.productImagePreview && (
+        {state.productImagePreviews.length > 0 && (
           <Card>
-            <p className="text-xs text-slate-400 mb-2">{t('campaigns.productImage')}</p>
-            <img
-              src={state.productImagePreview}
-              alt="Product"
-              className="max-h-48 rounded-xl object-contain"
-            />
+            <p className="text-xs text-slate-400 mb-2">{t('campaigns.referenceImages')}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {state.productImagePreviews.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={`Reference ${i + 1}`}
+                  className="w-full h-32 object-cover rounded-xl"
+                />
+              ))}
+            </div>
           </Card>
         )}
 

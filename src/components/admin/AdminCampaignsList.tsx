@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Camera, Music, Share, MessageCircle } from 'lucide-react';
+import { Camera, Music, Share, MessageCircle, Search } from 'lucide-react';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import Spinner from '../ui/Spinner';
@@ -12,6 +12,7 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   tiktok: <Music className="h-3.5 w-3.5" />,
   facebook: <Share className="h-3.5 w-3.5" />,
   whatsapp: <MessageCircle className="h-3.5 w-3.5" />,
+  google_ads: <Search className="h-3.5 w-3.5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {

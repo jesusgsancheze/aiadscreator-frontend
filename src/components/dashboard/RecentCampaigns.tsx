@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Music, Share, MessageCircle, ArrowRight } from 'lucide-react';
+import { Camera, Music, Share, MessageCircle, Search, ArrowRight } from 'lucide-react';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import type { Campaign, SocialMedia, CampaignStatus } from '../../types/campaign';
@@ -12,6 +12,7 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   tiktok: <Music className="h-3.5 w-3.5" />,
   facebook: <Share className="h-3.5 w-3.5" />,
   whatsapp: <MessageCircle className="h-3.5 w-3.5" />,
+  google_ads: <Search className="h-3.5 w-3.5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {

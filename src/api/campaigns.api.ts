@@ -70,4 +70,33 @@ export const campaignsApi = {
     const { data } = await api.patch(`/campaigns/${id}/performance`, payload);
     return data;
   },
+
+  refineCopy: async (id: string, instructions: string): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/refine-copy`, { instructions });
+    return data;
+  },
+
+  refineCaption: async (id: string, instructions: string): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/refine-caption`, { instructions });
+    return data;
+  },
+
+  generateMoreImages: async (id: string, count: number, instructions?: string): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/generate-images`, { count, instructions });
+    return data;
+  },
+
+  deleteImage: async (id: string, imageIndex: number): Promise<Campaign> => {
+    const { data } = await api.delete(`/campaigns/${id}/images/${imageIndex}`);
+    return data;
+  },
+
+  uploadImage: async (id: string, file: File): Promise<Campaign> => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const { data } = await api.post(`/campaigns/${id}/images/upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data;
+  },
 };

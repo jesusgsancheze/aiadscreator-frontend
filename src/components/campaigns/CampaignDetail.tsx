@@ -18,19 +18,20 @@ import {
   X,
   RefreshCw,
   Send,
+  Search,
 } from 'lucide-react';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import Spinner from '../ui/Spinner';
-import GeneratedImagesGrid from './GeneratedImagesGrid';
+import AIEditableField from './AIEditableField';
+import CampaignImagesManager from './CampaignImagesManager';
 import PerformanceChart from './PerformanceChart';
 import PublishToMetaModal from '../meta/PublishToMetaModal';
 import type { Campaign, SocialMedia, CampaignStatus } from '../../types/campaign';
 import type { Client } from '../../types/client';
 import {
-  useSelectImage,
   useUpdateCampaign,
   useUpdatePerformance,
   useDeleteCampaign,
@@ -44,6 +45,7 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   tiktok: <Music className="h-5 w-5" />,
   facebook: <Share className="h-5 w-5" />,
   whatsapp: <MessageCircle className="h-5 w-5" />,
+  google_ads: <Search className="h-5 w-5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {
@@ -140,7 +142,6 @@ interface CampaignDetailProps {
 export default function CampaignDetail({ campaign }: CampaignDetailProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const selectImage = useSelectImage();
   const updateCampaign = useUpdateCampaign();
   const updatePerformance = useUpdatePerformance();
   const deleteCampaign = useDeleteCampaign();
@@ -151,10 +152,6 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
 
   const clientName =
     typeof campaign.clientId === 'object' ? (campaign.clientId as Client).name : '';
-
-  const handleSelectImage = (index: number) => {
-    selectImage.mutate({ id: campaign._id, imageIndex: index });
-  };
 
   const handleSaveField = (field: string, value: string) => {
     updateCampaign.mutate({ id: campaign._id, payload: { [field]: value } });
@@ -269,41 +266,48 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
             multiline
           />
 
-          {/* Product Image */}
-          {campaign.productImage && (
+          {/* Reference Images */}
+          {campaign.productImages && campaign.productImages.length > 0 && (
             <Card>
               <h3 className="text-base font-semibold text-slate-900 mb-3">
-                {t('campaigns.productImage')}
+                {t('campaigns.referenceImages')}
               </h3>
-              <img
-                src={getImageUrl(campaign.productImage)}
-                alt="Product"
-                className="w-full max-h-64 object-contain rounded-xl"
-              />
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {campaign.productImages.map((img, i) => (
+                  <img
+                    key={i}
+                    src={getImageUrl(img)}
+                    alt={`Reference ${i + 1}`}
+                    className="w-full h-32 object-cover rounded-xl"
+                  />
+                ))}
+              </div>
             </Card>
           )}
 
-          {/* Copy - editable */}
+          {/* Copy - AI editable */}
           {campaign.copy && (
-            <EditableField
+            <AIEditableField
               label={t('campaigns.copy')}
               value={campaign.copy}
               icon={<Copy className="h-4 w-4 text-brand-primary" />}
-              onSave={(v) => handleSaveField('copy', v)}
+              field="copy"
+              campaignId={campaign._id}
+              onUpdate={(v) => handleSaveField('copy', v)}
               saving={updateCampaign.isPending}
-              multiline
             />
           )}
 
-          {/* Caption - editable */}
+          {/* Caption - AI editable */}
           {campaign.caption && (
-            <EditableField
+            <AIEditableField
               label={t('campaigns.caption')}
               value={campaign.caption}
               icon={<Type className="h-4 w-4 text-brand-secondary" />}
-              onSave={(v) => handleSaveField('caption', v)}
+              field="caption"
+              campaignId={campaign._id}
+              onUpdate={(v) => handleSaveField('caption', v)}
               saving={updateCampaign.isPending}
-              multiline
             />
           )}
 
@@ -322,19 +326,12 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
 
         {/* Right column */}
         <div className="space-y-6">
-          {/* Generated Images */}
-          {campaign.generatedImages.length > 0 && (
-            <Card>
-              <h3 className="text-base font-semibold text-slate-900 mb-4">
-                {t('campaigns.generatedImages')}
-              </h3>
-              <GeneratedImagesGrid
-                images={campaign.generatedImages}
-                selectedIndex={campaign.selectedImage}
-                onSelect={handleSelectImage}
-              />
-            </Card>
-          )}
+          {/* Generated Images Manager */}
+          <CampaignImagesManager
+            campaignId={campaign._id}
+            images={campaign.generatedImages}
+            selectedIndex={campaign.selectedImage}
+          />
 
           {/* Social Media Link */}
           <Card>
