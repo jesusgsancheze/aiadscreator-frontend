@@ -43,9 +43,9 @@ export interface TokenPackage {
 
 export interface IncomeReport {
   totalIncome: number;
-  totalTransactions: number;
-  byPaymentMethod: Array<{ method: string; total: number; count: number }>;
-  transactions: TokenTransaction[];
+  totalTokensSold: number;
+  transactionCount: number;
+  byPaymentMethod: Array<{ _id: string; totalIncome: number; totalTokens: number; count: number }>;
 }
 
 export interface AdminTransactionFilters {

@@ -9,7 +9,7 @@ import GeneratedImagesGrid from '../GeneratedImagesGrid';
 import Card from '../../ui/Card';
 import { useCreateCampaign, useCampaign, useGenerateContent, useSelectImage } from '../../../hooks/useCampaigns';
 import { useTokenBalance, useCampaignCost } from '../../../hooks/useTokens';
-import type { SocialMedia } from '../../../types/campaign';
+import type { SocialMedia, TextAgent, ImageAgent } from '../../../types/campaign';
 
 interface Step5Props {
   state: {
@@ -19,6 +19,9 @@ interface Step5Props {
     campaignDescription: string;
     imageDescription: string;
     imageCount: number;
+    textAgent: TextAgent;
+    imagePromptAgent: TextAgent;
+    imageAgent: ImageAgent;
     campaignId: string | null;
   };
   onCampaignCreated: (id: string) => void;
@@ -88,6 +91,9 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
       formData.append('campaignDescription', state.campaignDescription);
       formData.append('imageDescription', state.imageDescription);
       formData.append('imageCount', String(state.imageCount));
+      formData.append('textAgent', state.textAgent);
+      formData.append('imagePromptAgent', state.imagePromptAgent);
+      formData.append('imageAgent', state.imageAgent);
       state.productImages.forEach((file) => {
         formData.append('productImages', file);
       });

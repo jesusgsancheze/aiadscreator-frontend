@@ -43,14 +43,14 @@ export default function AdminIncomeTab() {
   }
 
   const avgTransaction =
-    report && report.totalTransactions > 0
-      ? report.totalIncome / report.totalTransactions
+    report && report.transactionCount > 0
+      ? report.totalIncome / report.transactionCount
       : 0;
 
   const pieData =
     report?.byPaymentMethod.map((item) => ({
-      name: t(`tokens.${item.method}`),
-      value: item.total,
+      name: t(`tokens.${item._id || 'purchase'}`),
+      value: item.totalIncome,
       count: item.count,
     })) ?? [];
 
@@ -105,7 +105,7 @@ export default function AdminIncomeTab() {
                 {t('tokens.totalTransactions')}
               </p>
               <p className="text-2xl font-bold text-slate-900">
-                {report?.totalTransactions ?? 0}
+                {report?.transactionCount ?? 0}
               </p>
             </div>
           </div>
@@ -162,68 +162,44 @@ export default function AdminIncomeTab() {
         </Card>
       )}
 
-      {/* Transactions list */}
-      {report?.transactions && report.transactions.length > 0 && (
+      {/* Payment method breakdown table */}
+      {report?.byPaymentMethod && report.byPaymentMethod.length > 0 && (
         <Card className="overflow-hidden p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50">
                   <th className="text-left px-4 py-3 font-medium text-slate-500">
-                    {t('tokens.date')}
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-slate-500">
-                    {t('tokens.type')}
+                    {t('tokens.method')}
                   </th>
                   <th className="text-right px-4 py-3 font-medium text-slate-500">
-                    {t('tokens.amount')}
+                    {t('tokens.totalIncome')}
                   </th>
                   <th className="text-right px-4 py-3 font-medium text-slate-500">
                     Tokens
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-slate-500">
-                    {t('tokens.method')}
-                  </th>
-                  <th className="text-center px-4 py-3 font-medium text-slate-500">
-                    {t('tokens.status')}
+                  <th className="text-right px-4 py-3 font-medium text-slate-500">
+                    {t('tokens.totalTransactions')}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {report.transactions.map((tx) => (
+                {report.byPaymentMethod.map((item) => (
                   <tr
-                    key={tx._id}
+                    key={item._id}
                     className="border-b border-slate-50 hover:bg-slate-50/50"
                   >
-                    <td className="px-4 py-3 text-slate-600">
-                      {formatDate(tx.createdAt)}
+                    <td className="px-4 py-3 text-slate-700 font-medium">
+                      {t(`tokens.${item._id || 'purchase'}`)}
                     </td>
-                    <td className="px-4 py-3 text-slate-700">
-                      {t(`tokens.${tx.type}`)}
-                    </td>
-                    <td className="px-4 py-3 text-right font-medium text-slate-700">
-                      {tx.amountUsd != null ? `$${tx.amountUsd}` : '-'}
+                    <td className="px-4 py-3 text-right font-semibold text-slate-900">
+                      ${item.totalIncome.toLocaleString()}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-emerald-600">
-                      {tx.tokens.toLocaleString()}
+                      {item.totalTokens.toLocaleString()}
                     </td>
-                    <td className="px-4 py-3 text-slate-500">
-                      {tx.paymentMethod
-                        ? t(`tokens.${tx.paymentMethod}`)
-                        : '-'}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <Badge
-                        variant={
-                          tx.status === 'approved'
-                            ? 'success'
-                            : tx.status === 'pending'
-                            ? 'warning'
-                            : 'error'
-                        }
-                      >
-                        {t(`tokens.${tx.status}`)}
-                      </Badge>
+                    <td className="px-4 py-3 text-right text-slate-600">
+                      {item.count}
                     </td>
                   </tr>
                 ))}

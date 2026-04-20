@@ -10,7 +10,7 @@ import Step3UploadImage from './steps/Step3UploadImage';
 import Step4Descriptions from './steps/Step4Descriptions';
 import Step5AIGeneration from './steps/Step5AIGeneration';
 import Step6Review from './steps/Step6Review';
-import type { SocialMedia } from '../../types/campaign';
+import type { SocialMedia, TextAgent, ImageAgent } from '../../types/campaign';
 import { cn } from '../../lib/utils';
 
 interface CampaignState {
@@ -23,6 +23,9 @@ interface CampaignState {
   campaignDescription: string;
   imageDescription: string;
   imageCount: number;
+  textAgent: TextAgent;
+  imagePromptAgent: TextAgent;
+  imageAgent: ImageAgent;
   campaignId: string | null;
 }
 
@@ -33,7 +36,7 @@ type CampaignAction =
   | { type: 'SET_IMAGES'; files: File[]; previews: string[] }
   | { type: 'ADD_IMAGES'; files: File[]; previews: string[] }
   | { type: 'REMOVE_IMAGE'; index: number }
-  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number }
+  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number; textAgent: TextAgent; imagePromptAgent: TextAgent; imageAgent: ImageAgent }
   | { type: 'SET_CAMPAIGN_ID'; campaignId: string };
 
 function reducer(state: CampaignState, action: CampaignAction): CampaignState {
@@ -62,6 +65,9 @@ function reducer(state: CampaignState, action: CampaignAction): CampaignState {
         campaignDescription: action.campaignDescription,
         imageDescription: action.imageDescription,
         imageCount: action.imageCount,
+        textAgent: action.textAgent,
+        imagePromptAgent: action.imagePromptAgent,
+        imageAgent: action.imageAgent,
       };
     case 'SET_CAMPAIGN_ID':
       return { ...state, campaignId: action.campaignId };
@@ -80,6 +86,9 @@ const initialState: CampaignState = {
   campaignDescription: '',
   imageDescription: '',
   imageCount: 3,
+  textAgent: 'claude',
+  imagePromptAgent: 'claude',
+  imageAgent: 'gemini',
   campaignId: null,
 };
 
@@ -204,12 +213,18 @@ export default function CampaignStepper() {
               campaignDescription={state.campaignDescription}
               imageDescription={state.imageDescription}
               imageCount={state.imageCount}
-              onChange={(cd, id, ic) => {
+              textAgent={state.textAgent}
+              imagePromptAgent={state.imagePromptAgent}
+              imageAgent={state.imageAgent}
+              onChange={(cd, id, ic, ta, ipa, ia) => {
                 dispatch({
                   type: 'SET_DESCRIPTIONS',
                   campaignDescription: cd,
                   imageDescription: id,
                   imageCount: ic,
+                  textAgent: ta,
+                  imagePromptAgent: ipa,
+                  imageAgent: ia,
                 });
               }}
             />

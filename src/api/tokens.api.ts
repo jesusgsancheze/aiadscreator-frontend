@@ -42,11 +42,11 @@ export const tokensApi = {
 
   getUserTransactions: async (): Promise<TokenTransaction[]> => {
     const { data } = await api.get('/tokens/transactions');
-    return data;
+    return data.transactions ?? data;
   },
 
   // Admin endpoints
-  getAdminTransactions: async (filters?: AdminTransactionFilters): Promise<{ data: TokenTransaction[]; total: number }> => {
+  getAdminTransactions: async (filters?: AdminTransactionFilters): Promise<{ transactions: TokenTransaction[]; total: number }> => {
     const params = new URLSearchParams();
     if (filters?.status) params.set('status', filters.status);
     if (filters?.userId) params.set('userId', filters.userId);

@@ -63,7 +63,7 @@ export default function AdminTransactionsTab() {
     );
   }
 
-  const transactions = data?.data ?? [];
+  const transactions = data?.transactions ?? [];
 
   return (
     <div className="space-y-4">
