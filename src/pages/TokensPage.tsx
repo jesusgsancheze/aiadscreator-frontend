@@ -8,7 +8,9 @@ import {
   CreditCard,
   ArrowRight,
   Info,
+  Copy,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import AppLayout from '../components/layout/AppLayout';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -314,11 +316,20 @@ export default function TokensPage() {
                           )}
                         </div>
                         {isActive && config?.config && (
-                          <div className="text-xs text-slate-500 space-y-1">
+                          <div className="text-xs text-slate-500 space-y-1" onClick={(e) => e.stopPropagation()}>
                             {method === 'binance' && (
                               <>
                                 {config.config.email && (
-                                  <p>Email: {config.config.email}</p>
+                                  <div className="flex items-center gap-1.5">
+                                    <p className="flex-1">Email: {config.config.email}</p>
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(config.config.email); toast.success(t('common.copied') || 'Copied!'); }}
+                                      className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-brand-primary transition-colors"
+                                      title="Copy"
+                                    >
+                                      <Copy className="h-3 w-3" />
+                                    </button>
+                                  </div>
                                 )}
                                 {config.config.qrCode && (
                                   <img
@@ -330,7 +341,16 @@ export default function TokensPage() {
                               </>
                             )}
                             {method === 'zelle' && config.config.email && (
-                              <p>Email: {config.config.email}</p>
+                              <div className="flex items-center gap-1.5">
+                                <p className="flex-1">Email: {config.config.email}</p>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(config.config.email); toast.success(t('common.copied') || 'Copied!'); }}
+                                  className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-brand-primary transition-colors"
+                                  title="Copy"
+                                >
+                                  <Copy className="h-3 w-3" />
+                                </button>
+                              </div>
                             )}
                             {method === 'pago_movil' && (
                               <>
@@ -353,6 +373,22 @@ export default function TokensPage() {
                                     Bs
                                   </p>
                                 )}
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const parts = [];
+                                    if (config.config.phone) parts.push(`Tel: ${config.config.phone}`);
+                                    if (config.config.cedula) parts.push(`CI: ${config.config.cedula}`);
+                                    if (config.config.bank) parts.push(`Banco: ${config.config.bank}`);
+                                    if (config.config.bcvRate) parts.push(`Monto: ${(purchasePrice * parseFloat(config.config.bcvRate)).toFixed(2)} Bs`);
+                                    navigator.clipboard.writeText(parts.join('\n'));
+                                    toast.success(t('common.copied') || 'Copied!');
+                                  }}
+                                  className="flex items-center gap-1 mt-1.5 px-2 py-1 rounded-lg bg-slate-100 hover:bg-brand-primary/10 text-slate-500 hover:text-brand-primary transition-colors"
+                                >
+                                  <Copy className="h-3 w-3" />
+                                  <span className="text-[10px] font-medium">{t('common.copyAll') || 'Copy all'}</span>
+                                </button>
                               </>
                             )}
                           </div>

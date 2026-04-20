@@ -262,6 +262,8 @@
     "status": "Statut",
     "date": "Date",
     "actions": "Actions",
+    "copied": "Copie dans le presse-papiers!",
+    "copyAll": "Tout copier",
     "verified": "Verifie",
     "notVerified": "Non Verifie",
     "total": "Total"

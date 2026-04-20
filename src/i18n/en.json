@@ -262,6 +262,8 @@
     "status": "Status",
     "date": "Date",
     "actions": "Actions",
+    "copied": "Copied to clipboard!",
+    "copyAll": "Copy all",
     "verified": "Verified",
     "notVerified": "Not Verified",
     "total": "Total"

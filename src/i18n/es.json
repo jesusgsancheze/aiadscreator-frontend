@@ -262,6 +262,8 @@
     "status": "Estado",
     "date": "Fecha",
     "actions": "Acciones",
+    "copied": "Copiado al portapapeles!",
+    "copyAll": "Copiar todo",
     "verified": "Verificado",
     "notVerified": "No Verificado",
     "total": "Total"
