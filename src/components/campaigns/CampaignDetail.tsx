@@ -19,7 +19,9 @@ import {
   RefreshCw,
   Send,
   Search,
+  ClipboardCopy,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
@@ -88,6 +90,13 @@ function EditableField({ label, value, icon, onSave, saving, multiline }: Editab
           <h3 className="text-base font-semibold text-slate-900">{label}</h3>
         </div>
         {!editing ? (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => { navigator.clipboard.writeText(value); toast.success(t('common.copied')); }}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-brand-primary hover:bg-brand-primary/5 transition-all"
+            >
+              <ClipboardCopy className="h-3.5 w-3.5" />
+            </button>
           <button
             onClick={() => { setDraft(value); setEditing(true); }}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all"
@@ -95,6 +104,7 @@ function EditableField({ label, value, icon, onSave, saving, multiline }: Editab
             <Pencil className="h-3.5 w-3.5" />
             {t('common.edit')}
           </button>
+          </div>
         ) : (
           <div className="flex items-center gap-1">
             <button

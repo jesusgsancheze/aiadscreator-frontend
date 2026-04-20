@@ -10,6 +10,7 @@ import {
   ImageIcon,
   ChevronDown,
   ChevronUp,
+  Download,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Card from '../ui/Card';
@@ -149,16 +150,26 @@ export default function CampaignImagesManager({
                 </motion.div>
               )}
 
-              {/* Delete button on hover */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(index);
-                }}
-                className="absolute top-2 left-2 h-7 w-7 rounded-full bg-red-500/90 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600 shadow-md"
-              >
-                <X className="h-3.5 w-3.5" />
-              </button>
+              {/* Action buttons on hover */}
+              <div className="absolute top-2 left-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(index);
+                  }}
+                  className="h-7 w-7 rounded-full bg-red-500/90 text-white flex items-center justify-center hover:bg-red-600 shadow-md"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+                <a
+                  href={getImageUrl(image)}
+                  download={`campaign-image-${index + 1}.png`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="h-7 w-7 rounded-full bg-slate-800/80 text-white flex items-center justify-center hover:bg-slate-900 shadow-md"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                </a>
+              </div>
             </motion.div>
           ))}
         </div>

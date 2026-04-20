@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pencil, Check, X, Sparkles, Loader2 } from 'lucide-react';
+import { Pencil, Check, X, Sparkles, Loader2, Copy } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
@@ -90,6 +91,15 @@ export default function AIEditableField({
         </div>
         {mode === 'view' && (
           <div className="flex items-center gap-1">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(value);
+                toast.success(t('common.copied'));
+              }}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-brand-primary hover:bg-brand-primary/5 transition-all"
+            >
+              <Copy className="h-3.5 w-3.5" />
+            </button>
             <button
               onClick={() => {
                 setDraft(value);
