@@ -23,6 +23,13 @@ import {
   useGenerateMoreImages,
 } from '../../hooks/useCampaigns';
 import { useTokenBalance } from '../../hooks/useTokens';
+import type { ImageAgent } from '../../types/campaign';
+
+const imageAgents: { id: ImageAgent; label: string }[] = [
+  { id: 'gemini', label: 'Gemini' },
+  { id: 'flux', label: 'Flux' },
+  { id: 'gpt_image', label: 'GPT-5' },
+];
 
 const MAX_IMAGES = 10;
 const COST_PER_IMAGE = 40;
@@ -43,6 +50,7 @@ export default function CampaignImagesManager({
   const [showGenerateForm, setShowGenerateForm] = useState(false);
   const [generateCount, setGenerateCount] = useState(1);
   const [generateInstructions, setGenerateInstructions] = useState('');
+  const [selectedImageAgent, setSelectedImageAgent] = useState<ImageAgent>('gemini');
 
   const selectImage = useSelectImage();
   const deleteImage = useDeleteCampaignImage();
@@ -83,6 +91,7 @@ export default function CampaignImagesManager({
         id: campaignId,
         count: generateCount,
         instructions: generateInstructions.trim() || undefined,
+        imageAgent: selectedImageAgent,
       },
       {
         onSuccess: () => {
@@ -237,6 +246,30 @@ export default function CampaignImagesManager({
                       }}
                       className="w-24 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all"
                     />
+                  </div>
+
+                  {/* Image Agent Selector */}
+                  <div>
+                    <label className="block text-xs font-medium text-slate-500 mb-1.5">
+                      {t('campaigns.imageGenAgent')}
+                    </label>
+                    <div className="flex gap-2">
+                      {imageAgents.map((agent) => (
+                        <button
+                          key={agent.id}
+                          type="button"
+                          onClick={() => setSelectedImageAgent(agent.id)}
+                          className={cn(
+                            'flex-1 px-3 py-2 rounded-lg border text-xs font-semibold transition-all',
+                            selectedImageAgent === agent.id
+                              ? 'border-purple-500 bg-purple-50 text-purple-600'
+                              : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300',
+                          )}
+                        >
+                          {agent.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Instructions */}

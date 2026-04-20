@@ -5,10 +5,17 @@ import { Pencil, Check, X, Sparkles, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
+import { cn } from '../../lib/utils';
 import { useRefineCopy, useRefineCaption } from '../../hooks/useCampaigns';
 import { useTokenBalance } from '../../hooks/useTokens';
+import type { TextAgent } from '../../types/campaign';
 
 type EditMode = 'view' | 'manual-edit' | 'ai-edit' | 'ai-loading';
+
+const textAgents: { id: TextAgent; label: string }[] = [
+  { id: 'claude', label: 'Claude' },
+  { id: 'grok', label: 'Grok' },
+];
 
 interface AIEditableFieldProps {
   label: string;
@@ -35,6 +42,7 @@ export default function AIEditableField({
   const [mode, setMode] = useState<EditMode>('view');
   const [draft, setDraft] = useState(value);
   const [instructions, setInstructions] = useState('');
+  const [selectedAgent, setSelectedAgent] = useState<TextAgent>('claude');
 
   const refineCopy = useRefineCopy();
   const refineCaption = useRefineCaption();
@@ -60,7 +68,7 @@ export default function AIEditableField({
 
     const mutation = field === 'copy' ? refineCopy : refineCaption;
     mutation.mutate(
-      { id: campaignId, instructions: instructions.trim() },
+      { id: campaignId, instructions: instructions.trim(), textAgent: selectedAgent },
       {
         onSuccess: () => {
           setInstructions('');
@@ -123,12 +131,10 @@ export default function AIEditableField({
         )}
       </div>
 
-      {/* View mode */}
       {mode === 'view' && (
         <p className="text-sm text-slate-600 whitespace-pre-wrap">{value}</p>
       )}
 
-      {/* Manual edit mode */}
       {mode === 'manual-edit' && (
         <textarea
           value={draft}
@@ -138,7 +144,6 @@ export default function AIEditableField({
         />
       )}
 
-      {/* AI edit mode */}
       <AnimatePresence>
         {(mode === 'ai-edit' || mode === 'ai-loading') && (
           <motion.div
@@ -147,7 +152,6 @@ export default function AIEditableField({
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            {/* Current text preview */}
             <div className="mb-4 rounded-xl bg-slate-50 p-4">
               <p className="text-sm text-slate-600 whitespace-pre-wrap">{value}</p>
             </div>
@@ -163,7 +167,30 @@ export default function AIEditableField({
               </div>
             ) : (
               <>
-                {/* Instructions textarea */}
+                {/* Agent selector */}
+                <div className="mb-3">
+                  <label className="block text-xs font-medium text-slate-500 mb-1.5">
+                    {t('campaigns.textAgent')}
+                  </label>
+                  <div className="flex gap-2">
+                    {textAgents.map((agent) => (
+                      <button
+                        key={agent.id}
+                        type="button"
+                        onClick={() => setSelectedAgent(agent.id)}
+                        className={cn(
+                          'flex-1 px-3 py-2 rounded-lg border text-xs font-semibold transition-all',
+                          selectedAgent === agent.id
+                            ? 'border-brand-primary bg-brand-primary/5 text-brand-primary'
+                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300',
+                        )}
+                      >
+                        {agent.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="mb-3">
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">
                     {t('campaigns.aiInstructions')}
@@ -177,7 +204,6 @@ export default function AIEditableField({
                   />
                 </div>
 
-                {/* Token cost info */}
                 <div className="mb-4 flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
                   <span className="text-xs text-slate-500">
                     {t('campaigns.aiEditCost', { cost: AI_EDIT_COST })}
@@ -205,7 +231,6 @@ export default function AIEditableField({
                   </div>
                 )}
 
-                {/* Action buttons */}
                 <div className="flex items-center gap-2">
                   <Button
                     size="sm"

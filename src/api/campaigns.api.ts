@@ -77,18 +77,18 @@ export const campaignsApi = {
     return data;
   },
 
-  refineCopy: async (id: string, instructions: string): Promise<Campaign> => {
-    const { data } = await api.post(`/campaigns/${id}/refine-copy`, { instructions });
+  refineCopy: async (id: string, instructions: string, textAgent?: string): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/refine-copy`, { instructions, textAgent });
     return data;
   },
 
-  refineCaption: async (id: string, instructions: string): Promise<Campaign> => {
-    const { data } = await api.post(`/campaigns/${id}/refine-caption`, { instructions });
+  refineCaption: async (id: string, instructions: string, textAgent?: string): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/refine-caption`, { instructions, textAgent });
     return data;
   },
 
-  generateMoreImages: async (id: string, count: number, instructions?: string): Promise<Campaign> => {
-    const { data } = await api.post(`/campaigns/${id}/generate-images`, { count, instructions });
+  generateMoreImages: async (id: string, count: number, instructions?: string, imageAgent?: string): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/generate-images`, { count, instructions, imageAgent });
     return data;
   },
 

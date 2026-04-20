@@ -131,8 +131,8 @@ export function useRefineCopy() {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: ({ id, instructions }: { id: string; instructions: string }) =>
-      campaignsApi.refineCopy(id, instructions),
+    mutationFn: ({ id, instructions, textAgent }: { id: string; instructions: string; textAgent?: string }) =>
+      campaignsApi.refineCopy(id, instructions, textAgent),
     onSuccess: (_, vars) => {
       queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
       queryClient.invalidateQueries({ queryKey: ['token-balance'] });
@@ -149,8 +149,8 @@ export function useRefineCaption() {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: ({ id, instructions }: { id: string; instructions: string }) =>
-      campaignsApi.refineCaption(id, instructions),
+    mutationFn: ({ id, instructions, textAgent }: { id: string; instructions: string; textAgent?: string }) =>
+      campaignsApi.refineCaption(id, instructions, textAgent),
     onSuccess: (_, vars) => {
       queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
       queryClient.invalidateQueries({ queryKey: ['token-balance'] });
@@ -167,8 +167,8 @@ export function useGenerateMoreImages() {
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: ({ id, count, instructions }: { id: string; count: number; instructions?: string }) =>
-      campaignsApi.generateMoreImages(id, count, instructions),
+    mutationFn: ({ id, count, instructions, imageAgent }: { id: string; count: number; instructions?: string; imageAgent?: string }) =>
+      campaignsApi.generateMoreImages(id, count, instructions, imageAgent),
     onSuccess: (_, vars) => {
       queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
       queryClient.invalidateQueries({ queryKey: ['token-balance'] });
