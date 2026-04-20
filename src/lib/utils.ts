@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getImageUrl(path: string | null): string {
   if (!path) return '';
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
   const base = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:4001';
   return `${base}/${path}`;
 }
