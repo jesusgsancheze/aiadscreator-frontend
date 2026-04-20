@@ -21,7 +21,7 @@ interface MethodFormState {
 const defaultConfigs: Record<PaymentMethodType, Record<string, string>> = {
   binance: { email: '', qrCode: '' },
   zelle: { email: '' },
-  pago_movil: { phone: '', cedula: '', bank: '', bcvRate: '' },
+  pago_movil: { phone: '', cedula: '', bank: '', bcvRate: '', qrCode: '' },
 };
 
 export default function AdminPaymentMethodsTab() {
@@ -229,6 +229,25 @@ export default function AdminPaymentMethodsTab() {
             }
             placeholder="36.50"
           />
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              QR Code
+            </label>
+            <FileUpload
+              onFileSelect={(file) => {
+                const reader = new FileReader();
+                reader.onload = () =>
+                  handleConfigChange(
+                    'pago_movil',
+                    'qrCode',
+                    reader.result as string,
+                  );
+                reader.readAsDataURL(file);
+              }}
+              preview={forms.pago_movil.config.qrCode || null}
+              className="min-h-[100px]"
+            />
+          </div>
           <Button
             size="sm"
             className="w-full"

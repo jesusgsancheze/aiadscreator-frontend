@@ -335,7 +335,7 @@ export default function TokensPage() {
                                   <img
                                     src={getImageUrl(config.config.qrCode)}
                                     alt="QR"
-                                    className="w-20 h-20 mt-2 rounded-lg border border-slate-200"
+                                    className="w-36 h-36 mt-2 rounded-xl border border-slate-200 mx-auto"
                                   />
                                 )}
                               </>
@@ -372,6 +372,13 @@ export default function TokensPage() {
                                     ).toFixed(2)}{' '}
                                     Bs
                                   </p>
+                                )}
+                                {config.config.qrCode && (
+                                  <img
+                                    src={getImageUrl(config.config.qrCode)}
+                                    alt="QR"
+                                    className="w-36 h-36 mt-2 rounded-xl border border-slate-200 mx-auto"
+                                  />
                                 )}
                                 <button
                                   onClick={(e) => {
