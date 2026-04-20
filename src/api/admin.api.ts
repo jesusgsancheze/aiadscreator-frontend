@@ -15,7 +15,7 @@ interface AdminDashboard {
 export const adminApi = {
   getUsers: async (): Promise<User[]> => {
     const { data } = await api.get('/admin/users');
-    return data;
+    return data.users ?? data;
   },
 
   getUser: async (id: string): Promise<User> => {
@@ -25,12 +25,12 @@ export const adminApi = {
 
   getClients: async (): Promise<Client[]> => {
     const { data } = await api.get('/admin/clients');
-    return data;
+    return data.clients ?? data;
   },
 
   getCampaigns: async (): Promise<Campaign[]> => {
     const { data } = await api.get('/admin/campaigns');
-    return data;
+    return data.campaigns ?? data;
   },
 
   getDashboard: async (): Promise<AdminDashboard> => {
