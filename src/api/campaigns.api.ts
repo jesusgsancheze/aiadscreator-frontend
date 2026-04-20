@@ -28,7 +28,13 @@ export const campaignsApi = {
     if (filters?.clientId) params.set('clientId', filters.clientId);
     if (filters?.search) params.set('search', filters.search);
     const { data } = await api.get(`/campaigns?${params.toString()}`);
-    return data;
+    // Backend returns { campaigns, total } — normalize to { data, total, page, limit, totalPages }
+    const campaigns = data.campaigns ?? data.data ?? [];
+    const total = data.total ?? 0;
+    const page = data.page ?? (filters?.page || 1);
+    const limit = data.limit ?? (filters?.limit || 20);
+    const totalPages = Math.ceil(total / limit) || 1;
+    return { data: campaigns, total, page, limit, totalPages };
   },
 
   getCampaign: async (id: string): Promise<Campaign> => {
