@@ -37,7 +37,6 @@ import {
   useUpdateCampaign,
   useUpdatePerformance,
   useDeleteCampaign,
-  useGenerateContent,
 } from '../../hooks/useCampaigns';
 import { useMetaInsights } from '../../hooks/useMeta';
 import { getImageUrl } from '../../lib/utils';
@@ -155,7 +154,6 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
   const updateCampaign = useUpdateCampaign();
   const updatePerformance = useUpdatePerformance();
   const deleteCampaign = useDeleteCampaign();
-  const generateContent = useGenerateContent();
   const [socialMediaLink, setSocialMediaLink] = useState(campaign.socialMediaLink || '');
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const { data: metaInsights, refetch: refetchInsights } = useMetaInsights(campaign.metaCampaignId || '');
@@ -172,12 +170,6 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
       id: campaign._id,
       payload: { socialMediaLink },
     });
-  };
-
-  const handleRegenerate = () => {
-    if (window.confirm(t('campaigns.regenerateConfirm'))) {
-      generateContent.mutate(campaign._id);
-    }
   };
 
   const handleDelete = () => {
@@ -239,15 +231,6 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
               {t('meta.publishToMeta')}
             </Button>
           )}
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleRegenerate}
-            loading={generateContent.isPending}
-          >
-            <RefreshCw className="h-4 w-4" />
-            {t('campaigns.regenerate')}
-          </Button>
           <Button variant="danger" size="sm" onClick={handleDelete}>
             <Trash2 className="h-4 w-4" />
             {t('campaigns.delete')}
