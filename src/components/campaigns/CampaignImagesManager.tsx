@@ -29,6 +29,7 @@ const imageAgents: { id: ImageAgent; label: string }[] = [
   { id: 'gemini', label: 'Gemini' },
   { id: 'flux', label: 'Flux' },
   { id: 'gpt_image', label: 'GPT-5' },
+  { id: 'riverflow', label: 'Riverflow' },
 ];
 
 const MAX_IMAGES = 10;
@@ -272,10 +273,11 @@ export default function CampaignImagesManager({
                     </div>
                   </div>
 
-                  {/* Instructions */}
+                  {/* Optional style override */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label className="block text-xs font-medium text-slate-500 mb-1.5">
                       {t('campaigns.generateImagesInstructions')}
+                      <span className="text-slate-400 font-normal ml-1">({t('common.optional') || 'optional'})</span>
                     </label>
                     <textarea
                       value={generateInstructions}
@@ -284,6 +286,9 @@ export default function CampaignImagesManager({
                       placeholder={t('campaigns.generateImagesPlaceholder')}
                       className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-secondary/30 focus:border-brand-secondary transition-all duration-200 resize-none"
                     />
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      {t('campaigns.generateImagesHint')}
+                    </p>
                   </div>
 
                   {/* Cost display */}

@@ -13,6 +13,7 @@ const imageAgents: { id: ImageAgent; label: string; desc: string }[] = [
   { id: 'gemini', label: 'Gemini', desc: 'Google' },
   { id: 'flux', label: 'Flux', desc: 'Black Forest Labs' },
   { id: 'gpt_image', label: 'GPT-5 Image', desc: 'OpenAI' },
+  { id: 'riverflow', label: 'Riverflow', desc: 'Sourceful' },
 ];
 
 interface Step4Props {
