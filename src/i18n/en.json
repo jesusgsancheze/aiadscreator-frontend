@@ -92,6 +92,8 @@
     "textAgent": "Copy & Caption Agent",
     "imagePromptAgent": "Image Prompt Agent",
     "imageGenAgent": "Image Generation Agent",
+    "preserveProduct": "Preserve product/logo",
+    "preserveProductDesc": "Keep the product or logo exactly as it appears in reference images. Only modify the surroundings and background.",
     "createNewClient": "Create New Brand",
     "generatingCopy": "Generating copy...",
     "generatingCaption": "Generating caption...",

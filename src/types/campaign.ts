@@ -25,6 +25,7 @@ export interface Campaign {
   textAgent: TextAgent;
   imagePromptAgent: TextAgent;
   imageAgent: ImageAgent;
+  preserveProduct: boolean;
   clientId: string | Client;
   userId: string;
   copy: string | null;

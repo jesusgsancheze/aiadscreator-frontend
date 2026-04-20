@@ -22,6 +22,7 @@ interface Step5Props {
     textAgent: TextAgent;
     imagePromptAgent: TextAgent;
     imageAgent: ImageAgent;
+    preserveProduct: boolean;
     campaignId: string | null;
   };
   onCampaignCreated: (id: string) => void;
@@ -94,6 +95,7 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
       formData.append('textAgent', state.textAgent);
       formData.append('imagePromptAgent', state.imagePromptAgent);
       formData.append('imageAgent', state.imageAgent);
+      formData.append('preserveProduct', String(state.preserveProduct));
       state.productImages.forEach((file) => {
         formData.append('productImages', file);
       });

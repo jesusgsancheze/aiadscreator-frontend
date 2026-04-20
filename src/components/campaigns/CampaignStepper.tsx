@@ -26,6 +26,7 @@ interface CampaignState {
   textAgent: TextAgent;
   imagePromptAgent: TextAgent;
   imageAgent: ImageAgent;
+  preserveProduct: boolean;
   campaignId: string | null;
 }
 
@@ -36,7 +37,7 @@ type CampaignAction =
   | { type: 'SET_IMAGES'; files: File[]; previews: string[] }
   | { type: 'ADD_IMAGES'; files: File[]; previews: string[] }
   | { type: 'REMOVE_IMAGE'; index: number }
-  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number; textAgent: TextAgent; imagePromptAgent: TextAgent; imageAgent: ImageAgent }
+  | { type: 'SET_DESCRIPTIONS'; campaignDescription: string; imageDescription: string; imageCount: number; textAgent: TextAgent; imagePromptAgent: TextAgent; imageAgent: ImageAgent; preserveProduct: boolean }
   | { type: 'SET_CAMPAIGN_ID'; campaignId: string };
 
 function reducer(state: CampaignState, action: CampaignAction): CampaignState {
@@ -68,6 +69,7 @@ function reducer(state: CampaignState, action: CampaignAction): CampaignState {
         textAgent: action.textAgent,
         imagePromptAgent: action.imagePromptAgent,
         imageAgent: action.imageAgent,
+        preserveProduct: action.preserveProduct,
       };
     case 'SET_CAMPAIGN_ID':
       return { ...state, campaignId: action.campaignId };
@@ -89,6 +91,7 @@ const initialState: CampaignState = {
   textAgent: 'claude',
   imagePromptAgent: 'claude',
   imageAgent: 'gemini',
+  preserveProduct: false,
   campaignId: null,
 };
 
@@ -216,7 +219,8 @@ export default function CampaignStepper() {
               textAgent={state.textAgent}
               imagePromptAgent={state.imagePromptAgent}
               imageAgent={state.imageAgent}
-              onChange={(cd, id, ic, ta, ipa, ia) => {
+              preserveProduct={state.preserveProduct}
+              onChange={(cd, id, ic, ta, ipa, ia, pp) => {
                 dispatch({
                   type: 'SET_DESCRIPTIONS',
                   campaignDescription: cd,
@@ -225,6 +229,7 @@ export default function CampaignStepper() {
                   textAgent: ta,
                   imagePromptAgent: ipa,
                   imageAgent: ia,
+                  preserveProduct: pp,
                 });
               }}
             />

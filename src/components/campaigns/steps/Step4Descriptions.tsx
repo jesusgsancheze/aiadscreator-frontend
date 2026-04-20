@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Images, Coins, Info, Bot } from 'lucide-react';
+import { Images, Coins, Info, Bot, ShieldCheck } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { useCampaignCost } from '../../../hooks/useTokens';
 import type { TextAgent, ImageAgent } from '../../../types/campaign';
@@ -22,6 +22,7 @@ interface Step4Props {
   textAgent: TextAgent;
   imagePromptAgent: TextAgent;
   imageAgent: ImageAgent;
+  preserveProduct: boolean;
   onChange: (
     campaignDesc: string,
     imageDesc: string,
@@ -29,6 +30,7 @@ interface Step4Props {
     textAgent: TextAgent,
     imagePromptAgent: TextAgent,
     imageAgent: ImageAgent,
+    preserveProduct: boolean,
   ) => void;
 }
 
@@ -39,6 +41,7 @@ export default function Step4Descriptions({
   textAgent,
   imagePromptAgent,
   imageAgent,
+  preserveProduct,
   onChange,
 }: Step4Props) {
   const { t } = useTranslation();
@@ -46,7 +49,7 @@ export default function Step4Descriptions({
 
   const update = (partial: Partial<{
     cd: string; id: string; ic: number;
-    ta: TextAgent; ipa: TextAgent; ia: ImageAgent;
+    ta: TextAgent; ipa: TextAgent; ia: ImageAgent; pp: boolean;
   }>) => {
     onChange(
       partial.cd ?? campaignDescription,
@@ -55,6 +58,7 @@ export default function Step4Descriptions({
       partial.ta ?? textAgent,
       partial.ipa ?? imagePromptAgent,
       partial.ia ?? imageAgent,
+      partial.pp ?? preserveProduct,
     );
   };
 
@@ -91,6 +95,45 @@ export default function Step4Descriptions({
             className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition-all duration-200 resize-none"
           />
         </div>
+
+        {/* Preserve Product Toggle */}
+        <button
+          type="button"
+          onClick={() => update({ pp: !preserveProduct })}
+          className={cn(
+            'w-full flex items-center gap-3 p-4 rounded-2xl border-2 text-left transition-all duration-200',
+            preserveProduct
+              ? 'border-brand-primary bg-brand-primary/5'
+              : 'border-slate-200 bg-white hover:border-slate-300',
+          )}
+        >
+          <div className={cn(
+            'p-2 rounded-xl transition-colors',
+            preserveProduct ? 'bg-brand-primary/10' : 'bg-slate-100',
+          )}>
+            <ShieldCheck className={cn(
+              'h-5 w-5',
+              preserveProduct ? 'text-brand-primary' : 'text-slate-400',
+            )} />
+          </div>
+          <div className="flex-1">
+            <span className="text-sm font-semibold text-slate-900">
+              {t('campaigns.preserveProduct')}
+            </span>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {t('campaigns.preserveProductDesc')}
+            </p>
+          </div>
+          <div className={cn(
+            'w-11 h-6 rounded-full p-0.5 transition-colors',
+            preserveProduct ? 'bg-brand-primary' : 'bg-slate-200',
+          )}>
+            <div className={cn(
+              'h-5 w-5 rounded-full bg-white shadow-sm transition-transform',
+              preserveProduct ? 'translate-x-5' : 'translate-x-0',
+            )} />
+          </div>
+        </button>
 
         {/* AI Agent Selection */}
         <div className="space-y-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">

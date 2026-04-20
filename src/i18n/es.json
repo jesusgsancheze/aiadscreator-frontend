@@ -92,6 +92,8 @@
     "textAgent": "Agente de Texto y Descripcion",
     "imagePromptAgent": "Agente de Prompt de Imagen",
     "imageGenAgent": "Agente de Generacion de Imagen",
+    "preserveProduct": "Preservar producto/logo",
+    "preserveProductDesc": "Mantener el producto o logo exactamente como aparece en las imagenes de referencia. Solo modificar el entorno y fondo.",
     "createNewClient": "Crear Nueva Marca",
     "generatingCopy": "Generando texto...",
     "generatingCaption": "Generando descripcion...",
