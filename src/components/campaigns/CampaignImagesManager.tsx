@@ -29,7 +29,6 @@ const imageAgents: { id: ImageAgent; label: string }[] = [
   { id: 'gemini', label: 'Gemini' },
   { id: 'flux', label: 'Flux' },
   { id: 'gpt_image', label: 'GPT-5' },
-  { id: 'riverflow', label: 'Riverflow' },
 ];
 
 const MAX_IMAGES = 10;
