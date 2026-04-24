@@ -58,7 +58,7 @@ export function useResendVerification() {
 }
 
 export function useProfile() {
-  const { token, setAuth, logout } = useAuthStore();
+  const { token, setAuth } = useAuthStore();
 
   return useQuery({
     queryKey: ['profile'],

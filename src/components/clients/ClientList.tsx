@@ -8,7 +8,6 @@ import Spinner from '../ui/Spinner';
 import Input from '../ui/Input';
 import type { Client } from '../../types/client';
 import { useClients, useDeleteClient } from '../../hooks/useClients';
-import toast from 'react-hot-toast';
 
 interface ClientListProps {
   onEdit: (client: Client) => void;

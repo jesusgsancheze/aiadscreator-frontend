@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -7,7 +7,6 @@ import {
   Upload,
   CreditCard,
   ArrowRight,
-  Info,
   Copy,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -61,8 +60,6 @@ export default function TokensPage() {
 
   const purchaseTokens = isCustom ? customTokens : (activePackage?.tokens ?? 0);
   const purchasePrice = isCustom ? customDollar : (activePackage?.price ?? 0);
-
-  const canProceedToPayment = purchaseTokens > 0 && purchasePrice > 0;
 
   const handleSelectPackage = (id: string) => {
     setSelectedPackage(id);
@@ -125,11 +122,6 @@ export default function TokensPage() {
         return 'default';
     }
   };
-
-  const activeMethods = useMemo(
-    () => paymentMethods?.filter((m) => m.isActive) ?? [],
-    [paymentMethods],
-  );
 
   return (
     <AppLayout title={t('tokens.buyTokens')}>

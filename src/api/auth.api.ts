@@ -1,6 +1,5 @@
 import api from './axios';
 import type { User } from '../types/user';
-import type { ApiResponse } from '../types/api';
 
 interface LoginPayload {
   email: string;

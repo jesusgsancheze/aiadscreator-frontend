@@ -11,9 +11,7 @@ import {
 } from 'recharts';
 import Card from '../../ui/Card';
 import Input from '../../ui/Input';
-import Badge from '../../ui/Badge';
 import Spinner from '../../ui/Spinner';
-import { formatDate } from '../../../lib/utils';
 import { useIncomeReport } from '../../../hooks/useTokens';
 
 const COLORS = ['#4EBEA2', '#12B2C1', '#F59E0B', '#EF4444'];
@@ -152,9 +150,7 @@ export default function AdminIncomeTab() {
                     />
                   ))}
                 </Pie>
-                <Tooltip
-                  formatter={(value: number) => [`$${value}`, '']}
-                />
+                <Tooltip formatter={(value) => [`$${value}`, '']} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>

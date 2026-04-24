@@ -6,12 +6,11 @@ import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 import FileUpload from '../../ui/FileUpload';
 import Spinner from '../../ui/Spinner';
-import { cn } from '../../../lib/utils';
 import {
   useAdminPaymentMethods,
   useUpdatePaymentMethod,
 } from '../../../hooks/useTokens';
-import type { PaymentMethodType, PaymentMethodConfig } from '../../../types/tokens';
+import type { PaymentMethodType } from '../../../types/tokens';
 
 interface MethodFormState {
   isActive: boolean;

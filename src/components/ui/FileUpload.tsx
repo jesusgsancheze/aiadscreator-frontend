@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { useTranslation } from 'react-i18next';
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -19,7 +18,6 @@ export default function FileUpload({
   preview: externalPreview,
   className,
 }: FileUploadProps) {
-  const { t } = useTranslation();
   const [preview, setPreview] = useState<string | null>(externalPreview || null);
 
   const onDrop = useCallback(
