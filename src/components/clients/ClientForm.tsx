@@ -30,6 +30,8 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
   const createClient = useCreateClient();
   const updateClient = useUpdateClient();
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoError, setLogoError] = useState<string | null>(null);
+  const isCreating = !client;
 
   const {
     register,
@@ -47,9 +49,18 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
       reset({ name: '', description: '' });
     }
     setLogoFile(null);
+    setLogoError(null);
   }, [client, reset, isOpen]);
 
   const onSubmit = (data: ClientFormData) => {
+    // Logo is required on create (Google PMax asset groups need one, and it's
+    // a good brand asset to have regardless). On edit, keep it optional.
+    if (isCreating && !logoFile) {
+      setLogoError(t('clients.logoRequired'));
+      return;
+    }
+    setLogoError(null);
+
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description);
@@ -100,11 +111,23 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">
             {t('clients.logo')}
+            {isCreating && <span className="text-red-500 ml-0.5">*</span>}
           </label>
           <FileUpload
-            onFileSelect={setLogoFile}
+            onFileSelect={(file) => {
+              setLogoFile(file);
+              if (file) setLogoError(null);
+            }}
             preview={client?.logo ? getImageUrl(client.logo) : null}
           />
+          {isCreating && (
+            <p className="mt-1.5 text-xs text-slate-500">
+              {t('clients.logoHint')}
+            </p>
+          )}
+          {logoError && (
+            <p className="mt-1.5 text-xs text-red-500">{logoError}</p>
+          )}
         </div>
 
         <div className="flex justify-end gap-3 pt-4">

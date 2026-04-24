@@ -124,7 +124,8 @@
     "imageGenerationCost": "{{count}} image(s) x 40 tokens = {{total}} tokens",
     "generatingImages": "Generation de {{count}} image(s)...",
     "uploadingImage": "Telechargement de l'image...",
-    "noImages": "Pas encore d'images"
+    "noImages": "Pas encore d'images",
+    "platformUnavailable": "Indisponible"
   },
   "clients": {
     "title": "Marques",
@@ -144,7 +145,17 @@
     "clients": "Marques",
     "campaigns": "Campagnes",
     "dashboard": "Tableau de bord",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "platforms": "Plateformes"
+  },
+  "adminPlatforms": {
+    "title": "Plateformes de campagne",
+    "description": "Controlez quelles plateformes de reseaux sociaux les utilisateurs peuvent choisir lors de la creation d'une campagne. Les plateformes desactivees restent visibles mais non selectionnables. Les plateformes masquees sont retirees du selecteur.",
+    "state": {
+      "enabled": "Activee",
+      "disabled": "Desactivee",
+      "hidden": "Masquee"
+    }
   },
   "meta": {
     "connectToMeta": "Connecter a Meta",

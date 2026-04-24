@@ -1,5 +1,8 @@
 import api from './axios';
-import type { Campaign } from '../types/campaign';
+import type { Campaign, SocialMedia } from '../types/campaign';
+
+export type PlatformAvailabilityState = 'enabled' | 'disabled' | 'hidden';
+export type PlatformAvailabilityMap = Record<SocialMedia, PlatformAvailabilityState>;
 
 interface CampaignFilters {
   page?: number;
@@ -103,6 +106,96 @@ export const campaignsApi = {
     const { data } = await api.post(`/campaigns/${id}/images/upload`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+    return data;
+  },
+
+  selectVerticalImage: async (id: string, imageIndex: number): Promise<Campaign> => {
+    const { data } = await api.patch(`/campaigns/${id}/select-vertical-image`, { imageIndex });
+    return data;
+  },
+
+  generateMoreVerticalImages: async (
+    id: string,
+    count: number,
+    instructions?: string,
+    imageAgent?: string,
+  ): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/generate-vertical-images`, {
+      count,
+      instructions,
+      imageAgent,
+    });
+    return data;
+  },
+
+  deleteVerticalImage: async (id: string, imageIndex: number): Promise<Campaign> => {
+    const { data } = await api.delete(`/campaigns/${id}/vertical-images/${imageIndex}`);
+    return data;
+  },
+
+  uploadVerticalImage: async (id: string, file: File): Promise<Campaign> => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const { data } = await api.post(`/campaigns/${id}/vertical-images/upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data;
+  },
+
+  selectVideo: async (id: string, videoIndex: number): Promise<Campaign> => {
+    const { data } = await api.patch(`/campaigns/${id}/select-video`, { videoIndex });
+    return data;
+  },
+
+  deleteVideo: async (id: string, videoIndex: number): Promise<Campaign> => {
+    const { data } = await api.delete(`/campaigns/${id}/videos/${videoIndex}`);
+    return data;
+  },
+
+  uploadVideo: async (id: string, file: File): Promise<Campaign> => {
+    const formData = new FormData();
+    formData.append('video', file);
+    const { data } = await api.post(`/campaigns/${id}/videos/upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data;
+  },
+
+  selectLandscapeImage: async (id: string, imageIndex: number): Promise<Campaign> => {
+    const { data } = await api.patch(`/campaigns/${id}/select-landscape-image`, { imageIndex });
+    return data;
+  },
+
+  generateMoreLandscapeImages: async (
+    id: string,
+    count: number,
+    instructions?: string,
+    imageAgent?: string,
+  ): Promise<Campaign> => {
+    const { data } = await api.post(`/campaigns/${id}/generate-landscape-images`, {
+      count,
+      instructions,
+      imageAgent,
+    });
+    return data;
+  },
+
+  deleteLandscapeImage: async (id: string, imageIndex: number): Promise<Campaign> => {
+    const { data } = await api.delete(`/campaigns/${id}/landscape-images/${imageIndex}`);
+    return data;
+  },
+
+  uploadLandscapeImage: async (id: string, file: File): Promise<Campaign> => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const { data } = await api.post(`/campaigns/${id}/landscape-images/upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data;
+  },
+
+  getPlatformAvailability: async (): Promise<PlatformAvailabilityMap> => {
+    const { data } = await api.get('/campaigns/platform-availability');
     return data;
   },
 };

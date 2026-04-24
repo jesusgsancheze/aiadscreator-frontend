@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../icons/SocialIcons';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon, MetaIcon } from '../icons/SocialIcons';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import Spinner from '../ui/Spinner';
@@ -13,6 +13,8 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   facebook: <FacebookIcon className="h-3.5 w-3.5" />,
   whatsapp: <WhatsAppIcon className="h-3.5 w-3.5" />,
   google_ads: <GoogleAdsIcon className="h-3.5 w-3.5" />,
+  meta_full: <MetaIcon className="h-3.5 w-3.5" />,
+  google_pmax: <GoogleAdsIcon className="h-3.5 w-3.5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {

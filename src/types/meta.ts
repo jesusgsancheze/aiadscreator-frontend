@@ -35,6 +35,19 @@ export interface PublishCampaignPayload {
   targetCountries?: string[];
   startDate?: string;
   endDate?: string;
+  optimizationGoal?: string;
+  billingEvent?: string;
+  ageMin?: number;
+  ageMax?: number;
+  genders?: number[];
+  advantageAudience?: boolean;
+  interests?: string[];
+  publisherPlatforms?: string[];
+  facebookPositions?: string[];
+  instagramPositions?: string[];
+  messengerPositions?: string[];
+  audienceNetworkPositions?: string[];
+  useAdvantagePlacements?: boolean;
 }
 
 export interface PublishCampaignResponse {

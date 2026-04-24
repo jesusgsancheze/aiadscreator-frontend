@@ -19,6 +19,14 @@ export function useCampaigns(filters?: CampaignFilters) {
   });
 }
 
+export function usePlatformAvailability() {
+  return useQuery({
+    queryKey: ['platform-availability'],
+    queryFn: () => campaignsApi.getPlatformAvailability(),
+    staleTime: 60_000,
+  });
+}
+
 export function useCampaign(id: string) {
   return useQuery({
     queryKey: ['campaigns', id],
@@ -204,6 +212,215 @@ export function useUploadCampaignImage() {
   return useMutation({
     mutationFn: ({ id, file }: { id: string; file: File }) =>
       campaignsApi.uploadImage(id, file),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useSelectVerticalImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, imageIndex }: { id: string; imageIndex: number }) =>
+      campaignsApi.selectVerticalImage(id, imageIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useGenerateMoreVerticalImages() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      count,
+      instructions,
+      imageAgent,
+    }: {
+      id: string;
+      count: number;
+      instructions?: string;
+      imageAgent?: string;
+    }) =>
+      campaignsApi.generateMoreVerticalImages(id, count, instructions, imageAgent),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      queryClient.invalidateQueries({ queryKey: ['token-balance'] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useDeleteVerticalImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, imageIndex }: { id: string; imageIndex: number }) =>
+      campaignsApi.deleteVerticalImage(id, imageIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useUploadVerticalImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, file }: { id: string; file: File }) =>
+      campaignsApi.uploadVerticalImage(id, file),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useSelectVideo() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, videoIndex }: { id: string; videoIndex: number }) =>
+      campaignsApi.selectVideo(id, videoIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useDeleteVideo() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, videoIndex }: { id: string; videoIndex: number }) =>
+      campaignsApi.deleteVideo(id, videoIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useUploadVideo() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, file }: { id: string; file: File }) =>
+      campaignsApi.uploadVideo(id, file),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useSelectLandscapeImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, imageIndex }: { id: string; imageIndex: number }) =>
+      campaignsApi.selectLandscapeImage(id, imageIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useGenerateMoreLandscapeImages() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      count,
+      instructions,
+      imageAgent,
+    }: {
+      id: string;
+      count: number;
+      instructions?: string;
+      imageAgent?: string;
+    }) =>
+      campaignsApi.generateMoreLandscapeImages(id, count, instructions, imageAgent),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      queryClient.invalidateQueries({ queryKey: ['token-balance'] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useDeleteLandscapeImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, imageIndex }: { id: string; imageIndex: number }) =>
+      campaignsApi.deleteLandscapeImage(id, imageIndex),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
+      toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useUploadLandscapeImage() {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: ({ id, file }: { id: string; file: File }) =>
+      campaignsApi.uploadLandscapeImage(id, file),
     onSuccess: (_, vars) => {
       queryClient.invalidateQueries({ queryKey: ['campaigns', vars.id] });
       toast.success(t('common.success'));

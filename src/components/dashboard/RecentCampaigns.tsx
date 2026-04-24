@@ -6,7 +6,7 @@ import Badge from '../ui/Badge';
 import type { Campaign, SocialMedia, CampaignStatus } from '../../types/campaign';
 import type { Client } from '../../types/client';
 import { formatDate, truncate } from '../../lib/utils';
-import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../icons/SocialIcons';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon, MetaIcon } from '../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
   instagram: <InstagramIcon className="h-3.5 w-3.5" />,
@@ -14,6 +14,8 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   facebook: <FacebookIcon className="h-3.5 w-3.5" />,
   whatsapp: <WhatsAppIcon className="h-3.5 w-3.5" />,
   google_ads: <GoogleAdsIcon className="h-3.5 w-3.5" />,
+  meta_full: <MetaIcon className="h-3.5 w-3.5" />,
+  google_pmax: <GoogleAdsIcon className="h-3.5 w-3.5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {

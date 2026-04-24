@@ -6,11 +6,10 @@ import { Check, Pencil, X } from 'lucide-react';
 import Card from '../../ui/Card';
 import Button from '../../ui/Button';
 import { useCampaign, useUpdateCampaign } from '../../../hooks/useCampaigns';
-import { getImageUrl } from '../../../lib/utils';
 import GeneratedImagesGrid from '../GeneratedImagesGrid';
 import { useSelectImage } from '../../../hooks/useCampaigns';
 import type { SocialMedia } from '../../../types/campaign';
-import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../../icons/SocialIcons';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon, MetaIcon } from '../../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
   instagram: <InstagramIcon className="h-5 w-5" />,
@@ -18,6 +17,8 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   facebook: <FacebookIcon className="h-5 w-5" />,
   whatsapp: <WhatsAppIcon className="h-5 w-5" />,
   google_ads: <GoogleAdsIcon className="h-5 w-5" />,
+  meta_full: <MetaIcon className="h-5 w-5" />,
+  google_pmax: <GoogleAdsIcon className="h-5 w-5" />,
 };
 
 interface InlineEditProps {
@@ -186,6 +187,37 @@ export default function Step6Review({ state }: Step6Props) {
                 onSave={(v) => handleSaveField('caption', v)}
                 multiline
               />
+            )}
+
+            {/* Google PMax preview: headlines + first description */}
+            {campaign.socialMedia === 'google_pmax' && campaign.headlines.length > 0 && (
+              <Card>
+                <p className="text-xs text-slate-400 mb-2">
+                  {t('campaigns.headlines')} ({campaign.headlines.length})
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {campaign.headlines.map((h, i) => (
+                    <span
+                      key={i}
+                      className="text-xs px-2.5 py-1 rounded-full bg-brand-primary/5 border border-brand-primary/20 text-slate-700"
+                    >
+                      {h}
+                    </span>
+                  ))}
+                </div>
+              </Card>
+            )}
+            {campaign.socialMedia === 'google_pmax' && campaign.descriptions.length > 0 && (
+              <Card>
+                <p className="text-xs text-slate-400 mb-2">
+                  {t('campaigns.descriptions')} ({campaign.descriptions.length})
+                </p>
+                <ul className="text-sm text-slate-700 space-y-1.5 list-disc list-inside">
+                  {campaign.descriptions.map((d, i) => (
+                    <li key={i}>{d}</li>
+                  ))}
+                </ul>
+              </Card>
             )}
 
             {campaign.generatedImages.length > 0 && (

@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Building2, Plus, Check } from 'lucide-react';
+import { Building2, Plus, Check, Sparkles } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import Spinner from '../../ui/Spinner';
+import Button from '../../ui/Button';
 import ClientForm from '../../clients/ClientForm';
+import MetaConnectionForm from '../../meta/MetaConnectionForm';
+import GoogleAdsConnectionForm from '../../google-ads/GoogleAdsConnectionForm';
 import { useClients } from '../../../hooks/useClients';
+import { useMetaConnection } from '../../../hooks/useMeta';
+import { useGoogleAdsConnection } from '../../../hooks/useGoogleAds';
 import { getImageUrl } from '../../../lib/utils';
 
 interface Step2Props {
@@ -17,6 +22,27 @@ export default function Step2SelectClient({ selected, onSelect }: Step2Props) {
   const { t } = useTranslation();
   const { data: clients, isLoading } = useClients();
   const [showForm, setShowForm] = useState(false);
+  const [showMetaForm, setShowMetaForm] = useState(false);
+  const [showGoogleAdsForm, setShowGoogleAdsForm] = useState(false);
+
+  const {
+    data: metaConnection,
+    isLoading: metaLoading,
+    isFetched: metaFetched,
+  } = useMetaConnection(selected || '');
+  const showMetaNudge =
+    !!selected && metaFetched && !metaLoading && !metaConnection;
+
+  const {
+    data: googleAdsConnection,
+    isLoading: googleAdsLoading,
+    isFetched: googleAdsFetched,
+  } = useGoogleAdsConnection(selected || '');
+  const showGoogleAdsNudge =
+    !!selected &&
+    googleAdsFetched &&
+    !googleAdsLoading &&
+    (!googleAdsConnection || !googleAdsConnection.isActive);
 
   if (isLoading) {
     return (
@@ -94,7 +120,71 @@ export default function Step2SelectClient({ selected, onSelect }: Step2Props) {
         })}
       </div>
 
+      {showMetaNudge && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-6 rounded-2xl border border-brand-primary/20 bg-brand-primary/5 p-5"
+        >
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-xl bg-brand-primary/10 shrink-0">
+              <Sparkles className="h-5 w-5 text-brand-primary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-slate-900 mb-1">
+                {t('meta.suggestion.nudgeTitle')}
+              </h3>
+              <p className="text-sm text-slate-600 mb-3">
+                {t('meta.suggestion.nudgeBody')}
+              </p>
+              <Button size="sm" onClick={() => setShowMetaForm(true)}>
+                {t('meta.suggestion.nudgeCta')}
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {showGoogleAdsNudge && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 rounded-2xl border border-amber-200 bg-amber-50/50 p-5"
+        >
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-xl bg-amber-100 shrink-0">
+              <Sparkles className="h-5 w-5 text-amber-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-slate-900 mb-1">
+                {t('googleAds.nudgeTitle')}
+              </h3>
+              <p className="text-sm text-slate-600 mb-3">
+                {t('googleAds.nudgeBody')}
+              </p>
+              <Button size="sm" onClick={() => setShowGoogleAdsForm(true)}>
+                {t('googleAds.nudgeCta')}
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       <ClientForm isOpen={showForm} onClose={() => setShowForm(false)} />
+      {selected && (
+        <>
+          <MetaConnectionForm
+            isOpen={showMetaForm}
+            onClose={() => setShowMetaForm(false)}
+            clientId={selected}
+          />
+          <GoogleAdsConnectionForm
+            isOpen={showGoogleAdsForm}
+            onClose={() => setShowGoogleAdsForm(false)}
+            clientId={selected}
+          />
+        </>
+      )}
     </div>
   );
 }

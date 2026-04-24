@@ -15,6 +15,9 @@ import {
   RefreshCw,
   Send,
   ClipboardCopy,
+  Building2,
+  AlignLeft,
+  Sparkles,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Card from '../ui/Card';
@@ -26,6 +29,7 @@ import AIEditableField from './AIEditableField';
 import CampaignImagesManager from './CampaignImagesManager';
 import PerformanceChart from './PerformanceChart';
 import PublishToMetaModal from '../meta/PublishToMetaModal';
+import PublishToGoogleAdsModal from '../google-ads/PublishToGoogleAdsModal';
 import type { Campaign, SocialMedia, CampaignStatus } from '../../types/campaign';
 import type { Client } from '../../types/client';
 import {
@@ -35,7 +39,7 @@ import {
 } from '../../hooks/useCampaigns';
 import { useMetaInsights } from '../../hooks/useMeta';
 import { getImageUrl } from '../../lib/utils';
-import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../icons/SocialIcons';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon, MetaIcon } from '../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
   instagram: <InstagramIcon className="h-5 w-5" />,
@@ -43,6 +47,8 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   facebook: <FacebookIcon className="h-5 w-5" />,
   whatsapp: <WhatsAppIcon className="h-5 w-5" />,
   google_ads: <GoogleAdsIcon className="h-5 w-5" />,
+  meta_full: <MetaIcon className="h-5 w-5" />,
+  google_pmax: <GoogleAdsIcon className="h-5 w-5" />,
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {
@@ -152,6 +158,7 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
   const deleteCampaign = useDeleteCampaign();
   const [socialMediaLink, setSocialMediaLink] = useState(campaign.socialMediaLink || '');
   const [publishModalOpen, setPublishModalOpen] = useState(false);
+  const [googleAdsPublishOpen, setGoogleAdsPublishOpen] = useState(false);
   const { data: metaInsights, refetch: refetchInsights } = useMetaInsights(campaign.metaCampaignId || '');
 
   const clientName =
@@ -217,7 +224,7 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
         </div>
         <div className="flex items-center gap-2">
           {(campaign.status === 'ready' || campaign.status === 'published') &&
-            (campaign.socialMedia === 'facebook' || campaign.socialMedia === 'instagram') && (
+            (campaign.socialMedia === 'facebook' || campaign.socialMedia === 'instagram' || campaign.socialMedia === 'meta_full') && (
             <Button
               variant="primary"
               size="sm"
@@ -225,6 +232,17 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
             >
               <Send className="h-4 w-4" />
               {t('meta.publishToMeta')}
+            </Button>
+          )}
+          {(campaign.status === 'ready' || campaign.status === 'published') &&
+            campaign.socialMedia === 'google_pmax' && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setGoogleAdsPublishOpen(true)}
+            >
+              <Send className="h-4 w-4" />
+              {t('googleAds.publishCta')}
             </Button>
           )}
           <Button variant="danger" size="sm" onClick={handleDelete}>
@@ -312,6 +330,343 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
               multiline
             />
           )}
+
+          {/* Google PMax: business name, headlines, long headlines, descriptions,
+              AI suggestion rationale, landscape image prompt. */}
+          {campaign.socialMedia === 'google_pmax' && (
+            <>
+              {campaign.businessName && (
+                <Card>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Building2 className="h-4 w-4 text-brand-primary" />
+                    <h3 className="text-sm font-semibold text-slate-700">
+                      {t('campaigns.businessName')}
+                    </h3>
+                  </div>
+                  <p className="text-base font-medium text-slate-900">
+                    {campaign.businessName}
+                  </p>
+                </Card>
+              )}
+
+              {campaign.headlines.length > 0 && (
+                <Card>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Type className="h-4 w-4 text-brand-primary" />
+                    <h3 className="text-sm font-semibold text-slate-700">
+                      {t('campaigns.headlines')} ({campaign.headlines.length})
+                    </h3>
+                  </div>
+                  <div className="space-y-1.5">
+                    {campaign.headlines.map((h, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start justify-between gap-3 rounded-lg bg-slate-50 px-3 py-2"
+                      >
+                        <p className="text-sm text-slate-700">{h}</p>
+                        <span className="text-xs text-slate-400 shrink-0 tabular-nums">
+                          {h.length}/30
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              {campaign.longHeadlines.length > 0 && (
+                <Card>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Type className="h-4 w-4 text-brand-secondary" />
+                    <h3 className="text-sm font-semibold text-slate-700">
+                      {t('campaigns.longHeadlines')} ({campaign.longHeadlines.length})
+                    </h3>
+                  </div>
+                  <div className="space-y-1.5">
+                    {campaign.longHeadlines.map((h, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start justify-between gap-3 rounded-lg bg-slate-50 px-3 py-2"
+                      >
+                        <p className="text-sm text-slate-700">{h}</p>
+                        <span className="text-xs text-slate-400 shrink-0 tabular-nums">
+                          {h.length}/90
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              {campaign.descriptions.length > 0 && (
+                <Card>
+                  <div className="flex items-center gap-2 mb-3">
+                    <AlignLeft className="h-4 w-4 text-purple-500" />
+                    <h3 className="text-sm font-semibold text-slate-700">
+                      {t('campaigns.descriptions')} ({campaign.descriptions.length})
+                    </h3>
+                  </div>
+                  <div className="space-y-1.5">
+                    {campaign.descriptions.map((d, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start justify-between gap-3 rounded-lg bg-slate-50 px-3 py-2"
+                      >
+                        <p className="text-sm text-slate-700">{d}</p>
+                        <span className="text-xs text-slate-400 shrink-0 tabular-nums">
+                          {d.length}/90
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              {campaign.googleAdsSuggestion && (
+                <Card className="border-brand-primary/20 bg-brand-primary/5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="h-4 w-4 text-brand-primary" />
+                    <h3 className="text-sm font-semibold text-brand-primary">
+                      {t('campaigns.googleAdsSuggestionTitle')}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-slate-500 italic mb-3">
+                    "{campaign.googleAdsSuggestion.rationale}"
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <p className="text-slate-400 mb-0.5">
+                        {t('campaigns.biddingStrategy')}
+                      </p>
+                      <p className="text-slate-900 font-medium">
+                        {campaign.googleAdsSuggestion.biddingStrategy.replace(/_/g, ' ')}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400 mb-0.5">{t('meta.dailyBudget')}</p>
+                      <p className="text-slate-900 font-medium">
+                        ${campaign.googleAdsSuggestion.dailyBudget}
+                      </p>
+                    </div>
+                    {campaign.googleAdsSuggestion.targetCpa != null && (
+                      <div>
+                        <p className="text-slate-400 mb-0.5">{t('campaigns.targetCpa')}</p>
+                        <p className="text-slate-900 font-medium">
+                          ${campaign.googleAdsSuggestion.targetCpa}
+                        </p>
+                      </div>
+                    )}
+                    {campaign.googleAdsSuggestion.targetRoas != null && (
+                      <div>
+                        <p className="text-slate-400 mb-0.5">{t('campaigns.targetRoas')}</p>
+                        <p className="text-slate-900 font-medium">
+                          {campaign.googleAdsSuggestion.targetRoas}x
+                        </p>
+                      </div>
+                    )}
+                    {campaign.googleAdsSuggestion.callToAction && (
+                      <div>
+                        <p className="text-slate-400 mb-0.5">
+                          {t('campaigns.callToAction')}
+                        </p>
+                        <p className="text-slate-900 font-medium">
+                          {campaign.googleAdsSuggestion.callToAction.replace(/_/g, ' ')}
+                        </p>
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-slate-400 mb-0.5">{t('campaigns.countries')}</p>
+                      <p className="text-slate-900 font-medium">
+                        {campaign.googleAdsSuggestion.geo.countries.join(', ')}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400 mb-0.5">{t('campaigns.languages')}</p>
+                      <p className="text-slate-900 font-medium">
+                        {campaign.googleAdsSuggestion.languages.join(', ').toUpperCase()}
+                      </p>
+                    </div>
+                  </div>
+                  {campaign.googleAdsSuggestion.audienceSignals.interests.length > 0 && (
+                    <div className="mt-3">
+                      <p className="text-xs text-slate-400 mb-1">
+                        {t('campaigns.audienceInterests')}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {campaign.googleAdsSuggestion.audienceSignals.interests.map(
+                          (interest, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-600"
+                            >
+                              {interest}
+                            </span>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {campaign.googleAdsSuggestion.audienceSignals.customSegmentHints
+                    .length > 0 && (
+                    <div className="mt-3">
+                      <p className="text-xs text-slate-400 mb-1">
+                        {t('campaigns.customSegmentHints')}
+                      </p>
+                      <ul className="text-xs text-slate-600 list-disc list-inside space-y-0.5">
+                        {campaign.googleAdsSuggestion.audienceSignals.customSegmentHints.map(
+                          (hint, idx) => (
+                            <li key={idx}>{hint}</li>
+                          ),
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </Card>
+              )}
+
+              {campaign.landscapeImagePrompt && (
+                <EditableField
+                  label={t('campaigns.landscapeImagePrompt')}
+                  value={campaign.landscapeImagePrompt}
+                  icon={<ImageIcon className="h-4 w-4 text-amber-500" />}
+                  onSave={(v) => handleSaveField('landscapeImagePrompt', v)}
+                  saving={updateCampaign.isPending}
+                  multiline
+                />
+              )}
+            </>
+          )}
+
+          {/* Meta-family: inline AI suggestion card (same info the Publish modal pre-fills). */}
+          {(campaign.socialMedia === 'meta_full' ||
+            campaign.socialMedia === 'facebook' ||
+            campaign.socialMedia === 'instagram') &&
+            campaign.suggestion && (
+              <Card className="border-brand-primary/20 bg-brand-primary/5">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="h-4 w-4 text-brand-primary" />
+                  <h3 className="text-sm font-semibold text-brand-primary">
+                    {t('meta.suggestion.banner')}
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 mb-1.5">
+                  {t('meta.suggestion.applied')}
+                </p>
+                {campaign.suggestion.rationale && (
+                  <p className="text-xs text-slate-500 italic mb-3">
+                    "{campaign.suggestion.rationale}"
+                  </p>
+                )}
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <p className="text-slate-400 mb-0.5">{t('meta.objective')}</p>
+                    <p className="text-slate-900 font-medium">
+                      {campaign.suggestion.objective.replace(/_/g, ' ')}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 mb-0.5">{t('meta.dailyBudget')}</p>
+                    <p className="text-slate-900 font-medium">
+                      ${campaign.suggestion.dailyBudget}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 mb-0.5">
+                      {t('meta.suggestion.optimizationGoal')}
+                    </p>
+                    <p className="text-slate-900 font-medium">
+                      {campaign.suggestion.optimizationGoal.replace(/_/g, ' ')}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 mb-0.5">
+                      {t('meta.suggestion.billingEvent')}
+                    </p>
+                    <p className="text-slate-900 font-medium">
+                      {campaign.suggestion.billingEvent.replace(/_/g, ' ')}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 mb-0.5">
+                      {t('meta.suggestion.ageRange')}
+                    </p>
+                    <p className="text-slate-900 font-medium">
+                      {campaign.suggestion.targeting.ageMin}–
+                      {campaign.suggestion.targeting.ageMax}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 mb-0.5">
+                      {t('meta.suggestion.gender')}
+                    </p>
+                    <p className="text-slate-900 font-medium">
+                      {(() => {
+                        const g = campaign.suggestion.targeting.genders;
+                        if (!g || g.length === 0 || (g.includes(1) && g.includes(2))) {
+                          return t('meta.suggestion.genderAll');
+                        }
+                        if (g.length === 1 && g[0] === 1) return t('meta.suggestion.genderMale');
+                        if (g.length === 1 && g[0] === 2) return t('meta.suggestion.genderFemale');
+                        return t('meta.suggestion.genderAll');
+                      })()}
+                    </p>
+                  </div>
+                  {campaign.suggestion.targeting.countries.length > 0 && (
+                    <div className="col-span-2">
+                      <p className="text-slate-400 mb-0.5">{t('campaigns.countries')}</p>
+                      <p className="text-slate-900 font-medium">
+                        {campaign.suggestion.targeting.countries.join(', ')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {campaign.suggestion.targeting.interests.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-xs text-slate-400 mb-1">
+                      {t('meta.suggestion.interests')}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {campaign.suggestion.targeting.interests.map((interest, idx) => (
+                        <span
+                          key={idx}
+                          className="text-xs px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-600"
+                        >
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {campaign.suggestion.placements && (
+                  <div className="mt-3">
+                    <p className="text-xs text-slate-400 mb-1">
+                      {t('meta.suggestion.placements')}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {campaign.suggestion.placements.publisherPlatforms.map((p, idx) => (
+                        <span
+                          key={idx}
+                          className="text-xs px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-600 capitalize"
+                        >
+                          {p === 'facebook' && t('meta.suggestion.platformFacebook')}
+                          {p === 'instagram' && t('meta.suggestion.platformInstagram')}
+                          {p === 'messenger' && t('meta.suggestion.platformMessenger')}
+                          {p === 'audience_network' &&
+                            t('meta.suggestion.platformAudienceNetwork')}
+                          {!['facebook', 'instagram', 'messenger', 'audience_network'].includes(p) && p}
+                        </span>
+                      ))}
+                      {campaign.suggestion.placements.useAdvantagePlacements && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary font-medium">
+                          {t('meta.suggestion.useAdvantagePlacements')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </Card>
+            )}
         </div>
 
         {/* Right column */}
@@ -321,6 +676,15 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
             campaignId={campaign._id}
             images={campaign.generatedImages}
             selectedIndex={campaign.selectedImage}
+            verticalImages={campaign.verticalImages}
+            selectedVerticalIndex={campaign.selectedVerticalImage}
+            videos={campaign.videos}
+            selectedVideoIndex={campaign.selectedVideo}
+            videoPrompt={campaign.videoPrompt}
+            showVideoSection={campaign.socialMedia === 'meta_full'}
+            landscapeImages={campaign.landscapeImages}
+            selectedLandscapeIndex={campaign.selectedLandscapeImage}
+            showLandscapeSection={campaign.socialMedia === 'google_pmax'}
           />
 
           {/* Social Media Link */}
@@ -426,6 +790,11 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
       <PublishToMetaModal
         isOpen={publishModalOpen}
         onClose={() => setPublishModalOpen(false)}
+        campaign={campaign}
+      />
+      <PublishToGoogleAdsModal
+        isOpen={googleAdsPublishOpen}
+        onClose={() => setGoogleAdsPublishOpen(false)}
         campaign={campaign}
       />
     </motion.div>

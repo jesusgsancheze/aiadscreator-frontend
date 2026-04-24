@@ -8,7 +8,7 @@ import type { Campaign, CampaignStatus, SocialMedia } from '../../types/campaign
 import type { Client } from '../../types/client';
 import { truncate, formatDate } from '../../lib/utils';
 import { useDeleteCampaign } from '../../hooks/useCampaigns';
-import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon } from '../icons/SocialIcons';
+import { InstagramIcon, TikTokIcon, FacebookIcon, WhatsAppIcon, GoogleAdsIcon, MetaIcon } from '../icons/SocialIcons';
 
 const socialIcons: Record<SocialMedia, React.ReactNode> = {
   instagram: <InstagramIcon className="h-4 w-4" />,
@@ -16,6 +16,8 @@ const socialIcons: Record<SocialMedia, React.ReactNode> = {
   facebook: <FacebookIcon className="h-4 w-4" />,
   whatsapp: <WhatsAppIcon className="h-4 w-4" />,
   google_ads: <GoogleAdsIcon className="h-4 w-4" />,
+  meta_full: <MetaIcon className="h-4 w-4" />,
+  google_pmax: <GoogleAdsIcon className="h-4 w-4" />,
 };
 
 const socialColors: Record<SocialMedia, string> = {
@@ -24,6 +26,8 @@ const socialColors: Record<SocialMedia, string> = {
   facebook: 'bg-blue-50 text-blue-600',
   whatsapp: 'bg-green-50 text-green-600',
   google_ads: 'bg-yellow-50 text-yellow-600',
+  meta_full: 'bg-gradient-to-br from-blue-50 to-pink-50 text-slate-700',
+  google_pmax: 'bg-gradient-to-br from-blue-50 to-yellow-50 text-slate-700',
 };
 
 const statusVariant: Record<CampaignStatus, 'success' | 'warning' | 'error' | 'info' | 'default'> = {

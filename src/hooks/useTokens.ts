@@ -143,23 +143,24 @@ export function useUpdatePaymentMethod() {
   });
 }
 
-export function useAdminSettings(key: string) {
+export function useAdminSettings<T = unknown>(key: string) {
   return useQuery({
     queryKey: ['admin-settings', key],
-    queryFn: () => tokensApi.getAdminSettings(key),
+    queryFn: () => tokensApi.getAdminSettings<T>(key),
     enabled: !!key,
   });
 }
 
-export function useUpdateAdminSettings() {
+export function useUpdateAdminSettings<T = unknown>() {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
   return useMutation({
-    mutationFn: ({ key, value }: { key: string; value: string[] }) =>
-      tokensApi.updateAdminSettings(key, value),
+    mutationFn: ({ key, value }: { key: string; value: T }) =>
+      tokensApi.updateAdminSettings<T>(key, value),
     onSuccess: (_, vars) => {
       queryClient.invalidateQueries({ queryKey: ['admin-settings', vars.key] });
+      queryClient.invalidateQueries({ queryKey: ['platform-availability'] });
       toast.success(t('common.success'));
     },
     onError: (error: any) => {

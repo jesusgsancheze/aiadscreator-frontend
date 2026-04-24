@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, HelpCircle, ChevronDown, ChevronUp, ExternalLink, AlertTriangle } from 'lucide-react';
 import Modal from '../ui/Modal';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
@@ -36,6 +36,7 @@ export default function MetaConnectionForm({
   const createConnection = useCreateMetaConnection();
   const updateConnection = useUpdateMetaConnection();
   const [showToken, setShowToken] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const {
     register,
@@ -93,6 +94,103 @@ export default function MetaConnectionForm({
       title={connection ? t('common.edit') : t('meta.connectToMeta')}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="rounded-xl border border-slate-200 bg-slate-50/60 overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setShowTutorial((v) => !v)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-100/60 transition-colors"
+            aria-expanded={showTutorial}
+          >
+            <span className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <HelpCircle className="h-4 w-4 text-brand-primary" />
+              {t('meta.tutorial.title')}
+            </span>
+            {showTutorial ? (
+              <ChevronUp className="h-4 w-4 text-slate-500" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-slate-500" />
+            )}
+          </button>
+          {showTutorial && (
+            <div className="px-4 pb-4 pt-1 space-y-4 text-sm text-slate-600 border-t border-slate-200">
+              <p className="pt-3">{t('meta.tutorial.intro')}</p>
+
+              <div className="space-y-1.5">
+                <p className="font-medium text-slate-800">{t('meta.tutorial.tokenTitle')}</p>
+                <p>{t('meta.tutorial.tokenDesc')}</p>
+                <p className="text-slate-500">{t('meta.tutorial.tokenDescAlt')}</p>
+                <div className="flex flex-wrap gap-3 pt-1">
+                  <a
+                    href="https://business.facebook.com/settings/system-users"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-brand-primary hover:underline"
+                  >
+                    {t('meta.tutorial.tokenCta')}
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                  <a
+                    href="https://developers.facebook.com/tools/explorer/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-brand-primary hover:underline"
+                  >
+                    {t('meta.tutorial.tokenCtaAlt')}
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <p className="font-medium text-slate-800">{t('meta.tutorial.adAccountTitle')}</p>
+                <p>{t('meta.tutorial.adAccountDesc')}</p>
+                <a
+                  href="https://business.facebook.com/adsmanager"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-brand-primary hover:underline"
+                >
+                  {t('meta.tutorial.adAccountCta')}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+
+              <div className="space-y-1.5">
+                <p className="font-medium text-slate-800">{t('meta.tutorial.pageTitle')}</p>
+                <p>{t('meta.tutorial.pageDesc')}</p>
+                <a
+                  href="https://business.facebook.com/settings/pages"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-brand-primary hover:underline"
+                >
+                  {t('meta.tutorial.pageCta')}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+
+              <div className="space-y-1.5">
+                <p className="font-medium text-slate-800">{t('meta.tutorial.igTitle')}</p>
+                <p>{t('meta.tutorial.igDesc')}</p>
+                <a
+                  href="https://business.facebook.com/settings/instagram-accounts"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-brand-primary hover:underline"
+                >
+                  {t('meta.tutorial.igCta')}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </div>
+
+              <div className="flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800">
+                <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
+                <span>{t('meta.tutorial.warning')}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="w-full">
           <label className="block text-sm font-medium text-slate-700 mb-1.5">
             {t('meta.accessToken')}

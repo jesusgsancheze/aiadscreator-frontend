@@ -11,6 +11,7 @@ import CampaignDetailPage from './pages/CampaignDetailPage';
 import AdminPage from './pages/AdminPage';
 import TokensPage from './pages/TokensPage';
 import NotFoundPage from './pages/NotFoundPage';
+import GoogleAdsConnectedPage from './pages/GoogleAdsConnectedPage';
 
 export default function App() {
   return (
@@ -19,6 +20,9 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />
+      {/* Public Google Ads OAuth callback landing — the popup closes itself
+          after posting back to window.opener. No auth guard needed. */}
+      <Route path="/google-ads/connected" element={<GoogleAdsConnectedPage />} />
 
       <Route
         path="/dashboard"

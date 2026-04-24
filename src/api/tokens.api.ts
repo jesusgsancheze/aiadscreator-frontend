@@ -102,12 +102,12 @@ export const tokensApi = {
     return data;
   },
 
-  getAdminSettings: async (key: string): Promise<{ key: string; value: string[] }> => {
+  getAdminSettings: async <T = unknown>(key: string): Promise<{ key: string; value: T } | null> => {
     const { data } = await api.get(`/tokens/admin/settings/${key}`);
     return data;
   },
 
-  updateAdminSettings: async (key: string, value: string[]): Promise<{ key: string; value: string[] }> => {
+  updateAdminSettings: async <T = unknown>(key: string, value: T): Promise<{ key: string; value: T }> => {
     const { data } = await api.patch(`/tokens/admin/settings/${key}`, { value });
     return data;
   },

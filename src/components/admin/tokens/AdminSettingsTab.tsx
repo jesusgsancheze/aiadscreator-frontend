@@ -12,8 +12,8 @@ import {
 
 export default function AdminSettingsTab() {
   const { t } = useTranslation();
-  const { data: settingsData, isLoading } = useAdminSettings('notificationEmails');
-  const updateSettings = useUpdateAdminSettings();
+  const { data: settingsData, isLoading } = useAdminSettings<string[]>('notificationEmails');
+  const updateSettings = useUpdateAdminSettings<string[]>();
 
   const [emails, setEmails] = useState<string[]>([]);
   const [newEmail, setNewEmail] = useState('');
