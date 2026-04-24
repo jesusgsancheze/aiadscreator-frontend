@@ -14,7 +14,7 @@ import Input from '../../ui/Input';
 import Spinner from '../../ui/Spinner';
 import { useIncomeReport } from '../../../hooks/useTokens';
 
-const COLORS = ['#4EBEA2', '#12B2C1', '#F59E0B', '#EF4444'];
+const COLORS = ['#7c185d', '#e2b5d8', '#F59E0B', '#EF4444'];
 
 export default function AdminIncomeTab() {
   const { t } = useTranslation();

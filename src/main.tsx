@@ -36,7 +36,7 @@ createRoot(document.getElementById('root')!).render(
             },
             success: {
               iconTheme: {
-                primary: '#4EBEA2',
+                primary: '#7c185d',
                 secondary: '#fff',
               },
             },

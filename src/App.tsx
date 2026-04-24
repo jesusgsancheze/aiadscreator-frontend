@@ -12,11 +12,18 @@ import AdminPage from './pages/AdminPage';
 import TokensPage from './pages/TokensPage';
 import NotFoundPage from './pages/NotFoundPage';
 import GoogleAdsConnectedPage from './pages/GoogleAdsConnectedPage';
+import LandingPage from './pages/LandingPage';
+import { useAuthStore } from './store/auth.store';
+
+function HomeGate() {
+  const token = useAuthStore((s) => s.token);
+  return token ? <Navigate to="/dashboard" replace /> : <LandingPage />;
+}
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<HomeGate />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />

@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             <div className="p-3 rounded-2xl bg-white/20 backdrop-blur-sm">
               <Sparkles className="h-8 w-8" />
             </div>
-            <span className="text-3xl font-bold">AI Ads Creator</span>
+            <span className="text-3xl font-bold">ContenidIA</span>
           </div>
           <h2 className="text-4xl font-bold leading-tight mb-4">
             Create stunning ads
@@ -27,6 +27,14 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             Generate professional ad campaigns for Instagram, TikTok, Facebook, and
             WhatsApp in seconds.
           </p>
+          <a
+            href="https://instagram.com/lasdelcontenido_"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-10 text-xs text-white/70 hover:text-white transition-colors"
+          >
+            Powered by @lasdelcontenido_
+          </a>
         </div>
         {/* Decorative circles */}
         <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-white/5" />

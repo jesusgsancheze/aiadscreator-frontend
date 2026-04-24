@@ -43,7 +43,7 @@ export default function PerformanceChart({ analytics }: PerformanceChartProps) {
                 boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
               }}
             />
-            <Bar dataKey="value" fill="#4EBEA2" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="value" fill="#7c185d" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -1,4 +1,81 @@
 {
+  "landing": {
+    "nav": {
+      "how": "How it works",
+      "features": "Features",
+      "pricing": "Pricing",
+      "login": "Log in",
+      "register": "Sign up"
+    },
+    "hero": {
+      "badge": "AI-powered ad creation",
+      "title1": "Launch ads in minutes,",
+      "title2": "not days.",
+      "subtitle": "Generate copy, images and full targeting for Meta, Google, TikTok and WhatsApp — from a single brief. No designer, no copywriter, no guesswork.",
+      "ctaPrimary": "Get started free",
+      "ctaSecondary": "See how it works",
+      "platformsLabel": "Publish to",
+      "mockHeadline": "New Collection",
+      "mockCopy": "Drop just landed. Shop the campaign our AI wrote, designed and targeted — all from a one-line brief. #contenidIA",
+      "mockBadge": "Generated in 42s"
+    },
+    "showcase": {
+      "title": "From one brief, every asset you need",
+      "subtitle": "The same campaign, adapted per channel — feed, vertical, and landscape — with copy tuned to each platform's voice.",
+      "ads": [
+        { "headline": "Glow up", "copy": "Serum that works while you sleep. Wake up to the skin you've been promised." },
+        { "headline": "Don't blink", "copy": "60 seconds to show why this hoodie is the last one you'll buy this year." },
+        { "headline": "Shop smarter", "copy": "AI-optimized targeting means your budget finds the buyers, not the browsers." }
+      ]
+    },
+    "photo": {
+      "title": "Made for creators who ship every week.",
+      "subtitle": "Whether you run one brand or ten, ContenidIA keeps the voice consistent and the calendar full."
+    },
+    "how": {
+      "title": "From brief to live campaign in four steps",
+      "subtitle": "Describe your brand once, then spin up on-brand campaigns across every channel you sell on.",
+      "steps": [
+        { "title": "Pick your platform", "desc": "Choose Meta, Google Performance Max, TikTok, Instagram, Facebook or WhatsApp. We optimize formats and specs for each." },
+        { "title": "Describe the campaign", "desc": "Upload reference images of your product and tell us what you're selling and to whom. Two sentences is enough." },
+        { "title": "AI generates everything", "desc": "Copy, captions, square + vertical + landscape images, targeting and budget — all grounded in your brand voice." },
+        { "title": "Review, refine, publish", "desc": "Tweak any asset with AI, pick your favorites, and publish directly to Meta or Google Ads with one click." }
+      ]
+    },
+    "features": {
+      "title": "Everything you need to ship a campaign",
+      "subtitle": "Built for marketers who want performance without the production time.",
+      "items": [
+        { "title": "AI copy & captions", "desc": "Ad copy and captions tuned per platform — short-form for TikTok, scannable for Meta, keyword-aware for Google." },
+        { "title": "Multi-format images", "desc": "Square for Feed, vertical for Stories and Reels, landscape for Performance Max and YouTube — all generated in parallel." },
+        { "title": "Reels video concepts", "desc": "Upload a 9:16 clip and we auto-pair it with matching copy and captions for Stories and Reels." },
+        { "title": "Smart targeting", "desc": "Budget, audience interests, placements and bidding strategy suggested from your brand context and past performance." },
+        { "title": "One-click publishing", "desc": "Push live to Meta Ads Manager or Google Ads Performance Max without leaving the app." },
+        { "title": "Refine with AI", "desc": "\"Make it shorter\" or \"add a discount hook\" — edit any asset in natural language and regenerate only what you need." }
+      ]
+    },
+    "pricing": {
+      "title": "Pay for what you generate",
+      "subtitle": "No subscriptions. Buy a token pack, use it when you need it — tokens never expire.",
+      "popular": "Most popular",
+      "tokens": "tokens",
+      "cta": "Get started",
+      "tiers": {
+        "pkg_50": "Starter",
+        "pkg_100": "Pro",
+        "pkg_200": "Scale"
+      },
+      "costsTitle": "What a token buys you",
+      "costCopy": "Copy + caption for one campaign — 50 tokens",
+      "costImage": "One AI-generated image — 40 tokens",
+      "costCustom": "Refining an asset with AI costs the same as generating it fresh"
+    },
+    "finalCta": {
+      "title": "Ship your next campaign this afternoon.",
+      "subtitle": "Create a free account, add your brand, and run your first AI campaign in under 10 minutes.",
+      "cta": "Create your account"
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "campaigns": "Campaigns",

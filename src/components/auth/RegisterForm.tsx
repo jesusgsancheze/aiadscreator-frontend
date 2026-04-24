@@ -53,7 +53,7 @@ export default function RegisterForm() {
         <div className="gradient-brand p-2 rounded-xl">
           <Sparkles className="h-5 w-5 text-white" />
         </div>
-        <span className="text-lg font-bold gradient-brand-text">AI Ads Creator</span>
+        <span className="text-lg font-bold gradient-brand-text">ContenidIA</span>
       </div>
 
       <h1 className="text-2xl font-bold text-slate-900 mb-2">{t('auth.registerTitle')}</h1>

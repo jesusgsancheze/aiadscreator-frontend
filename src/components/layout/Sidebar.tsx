@@ -66,7 +66,7 @@ export default function Sidebar() {
             <div className="gradient-brand p-2 rounded-xl">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
-            <span className="text-lg font-bold gradient-brand-text">AI Ads Creator</span>
+            <span className="text-lg font-bold gradient-brand-text">ContenidIA</span>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -124,6 +124,14 @@ export default function Sidebar() {
             <LogOut className="h-5 w-5" />
             {t('nav.logout')}
           </button>
+          <a
+            href="https://instagram.com/lasdelcontenido_"
+            target="_blank"
+            rel="noreferrer"
+            className="block mt-3 px-4 text-[10px] text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            Powered by @lasdelcontenido_
+          </a>
         </div>
       </aside>
     </>

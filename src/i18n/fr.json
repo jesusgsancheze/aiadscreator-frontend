@@ -1,4 +1,81 @@
 {
+  "landing": {
+    "nav": {
+      "how": "Comment ca marche",
+      "features": "Fonctionnalites",
+      "pricing": "Tarifs",
+      "login": "Se connecter",
+      "register": "S'inscrire"
+    },
+    "hero": {
+      "badge": "Publicite pilotee par l'IA",
+      "title1": "Lancez vos pubs en minutes,",
+      "title2": "pas en jours.",
+      "subtitle": "Generez le copy, les visuels et le ciblage complet pour Meta, Google, TikTok et WhatsApp depuis un seul brief. Sans designer, sans copywriter, sans deviner.",
+      "ctaPrimary": "Commencer gratuitement",
+      "ctaSecondary": "Voir comment ca marche",
+      "platformsLabel": "Publiez sur",
+      "mockHeadline": "Nouvelle collection",
+      "mockCopy": "Disponible maintenant. Decouvrez la campagne que l'IA a ecrite, concue et ciblee — depuis un brief d'une ligne. #contenidIA",
+      "mockBadge": "Genere en 42s"
+    },
+    "showcase": {
+      "title": "D'un brief, tous les assets dont vous avez besoin",
+      "subtitle": "La meme campagne, adaptee par canal — feed, vertical, paysage — avec un copy cale sur la voix de chaque plateforme.",
+      "ads": [
+        { "headline": "Glow", "copy": "Le serum qui agit pendant votre sommeil. Reveillez-vous avec la peau qu'on vous a promise." },
+        { "headline": "Ne clignez pas", "copy": "60 secondes pour montrer pourquoi ce hoodie est le dernier que vous acheterez cette annee." },
+        { "headline": "Achetez mieux", "copy": "Le ciblage par IA fait que votre budget trouve les acheteurs, pas les curieux." }
+      ]
+    },
+    "photo": {
+      "title": "Fait pour les createurs qui publient chaque semaine.",
+      "subtitle": "Une marque ou dix, ContenidIA garde la voix coherente et le calendrier plein."
+    },
+    "how": {
+      "title": "Du brief a la campagne en quatre etapes",
+      "subtitle": "Decrivez votre marque une fois, puis lancez des campagnes coherentes sur chaque canal.",
+      "steps": [
+        { "title": "Choisissez la plateforme", "desc": "Meta, Google Performance Max, TikTok, Instagram, Facebook ou WhatsApp. Nous optimisons les formats et specs pour chacune." },
+        { "title": "Decrivez la campagne", "desc": "Televersez des images de reference de votre produit et dites-nous ce que vous vendez et a qui. Deux phrases suffisent." },
+        { "title": "L'IA genere tout", "desc": "Copy, captions, visuels carres + verticaux + paysages, ciblage et budget — cales sur la voix de votre marque." },
+        { "title": "Revisez, ajustez, publiez", "desc": "Modifiez n'importe quel asset avec l'IA, choisissez vos favoris, et publiez directement sur Meta ou Google Ads en un clic." }
+      ]
+    },
+    "features": {
+      "title": "Tout ce qu'il faut pour lancer une campagne",
+      "subtitle": "Concu pour les marketers qui veulent de la performance sans le temps de production.",
+      "items": [
+        { "title": "Copy et captions par IA", "desc": "Textes adaptes par plateforme — courts pour TikTok, scannables pour Meta, orientes mots-cles pour Google." },
+        { "title": "Visuels multi-formats", "desc": "Carre pour le Feed, vertical pour Stories et Reels, paysage pour Performance Max et YouTube — tous en parallele." },
+        { "title": "Concepts de Reels", "desc": "Televersez un clip 9:16 et nous l'associons automatiquement a un copy et une caption pour Stories et Reels." },
+        { "title": "Ciblage intelligent", "desc": "Budget, interets d'audience, placements et strategie d'enchere suggeres depuis votre contexte de marque et vos performances." },
+        { "title": "Publication en un clic", "desc": "Envoyez en direct sur Meta Ads Manager ou Google Ads Performance Max sans quitter l'app." },
+        { "title": "Retravaillez avec l'IA", "desc": "\"Raccourcis\" ou \"ajoute une accroche\" — editez tout asset en langage naturel et regenerez uniquement ce qu'il faut." }
+      ]
+    },
+    "pricing": {
+      "title": "Payez ce que vous generez",
+      "subtitle": "Pas d'abonnement. Achetez un pack de tokens, utilisez-les quand vous voulez — ils n'expirent pas.",
+      "popular": "Le plus populaire",
+      "tokens": "tokens",
+      "cta": "Commencer",
+      "tiers": {
+        "pkg_50": "Starter",
+        "pkg_100": "Pro",
+        "pkg_200": "Scale"
+      },
+      "costsTitle": "Ce qu'un token vous offre",
+      "costCopy": "Copy + caption pour une campagne — 50 tokens",
+      "costImage": "Une image generee par IA — 40 tokens",
+      "costCustom": "Affiner un asset avec l'IA coute le meme prix que le generer a neuf"
+    },
+    "finalCta": {
+      "title": "Lancez votre prochaine campagne cet apres-midi.",
+      "subtitle": "Creez un compte gratuit, ajoutez votre marque, et lancez votre premiere campagne IA en moins de 10 minutes.",
+      "cta": "Creer mon compte"
+    }
+  },
   "nav": {
     "dashboard": "Tableau de bord",
     "campaigns": "Campagnes",

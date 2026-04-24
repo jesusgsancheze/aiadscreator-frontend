@@ -722,7 +722,7 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
                   <svg className="h-20 w-20 -rotate-90">
                     <circle cx="40" cy="40" r="34" stroke="#f1f5f9" strokeWidth="6" fill="none" />
                     <circle
-                      cx="40" cy="40" r="34" stroke="#4EBEA2" strokeWidth="6" fill="none"
+                      cx="40" cy="40" r="34" stroke="#7c185d" strokeWidth="6" fill="none"
                       strokeDasharray={`${(campaign.performanceScore / 100) * 213.6} 213.6`}
                       strokeLinecap="round"
                     />

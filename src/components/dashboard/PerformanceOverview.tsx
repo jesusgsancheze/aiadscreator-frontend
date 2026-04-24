@@ -27,8 +27,8 @@ export default function PerformanceOverview({ data }: PerformanceOverviewProps) 
           <AreaChart data={data}>
             <defs>
               <linearGradient id="colorPerf" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#4EBEA2" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#4EBEA2" stopOpacity={0} />
+                <stop offset="5%" stopColor="#7c185d" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#7c185d" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -44,7 +44,7 @@ export default function PerformanceOverview({ data }: PerformanceOverviewProps) 
             <Area
               type="monotone"
               dataKey="performance"
-              stroke="#4EBEA2"
+              stroke="#7c185d"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorPerf)"

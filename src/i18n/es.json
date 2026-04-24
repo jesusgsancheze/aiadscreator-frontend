@@ -1,4 +1,81 @@
 {
+  "landing": {
+    "nav": {
+      "how": "Como funciona",
+      "features": "Funciones",
+      "pricing": "Precios",
+      "login": "Iniciar sesion",
+      "register": "Crear cuenta"
+    },
+    "hero": {
+      "badge": "Publicidad creada con IA",
+      "title1": "Lanza campanas en minutos,",
+      "title2": "no en dias.",
+      "subtitle": "Genera copy, imagenes y segmentacion completa para Meta, Google, TikTok y WhatsApp desde un solo brief. Sin disenador, sin copywriter, sin adivinar.",
+      "ctaPrimary": "Empieza gratis",
+      "ctaSecondary": "Ver como funciona",
+      "platformsLabel": "Publica en",
+      "mockHeadline": "Nueva coleccion",
+      "mockCopy": "Ya esta disponible. Compra la campana que la IA escribio, diseno y segmento — todo desde un brief de una linea. #contenidIA",
+      "mockBadge": "Generado en 42s"
+    },
+    "showcase": {
+      "title": "De un solo brief, todos los assets que necesitas",
+      "subtitle": "La misma campana, adaptada por canal — feed, vertical y horizontal — con copy afinado a la voz de cada plataforma.",
+      "ads": [
+        { "headline": "Brilla", "copy": "El serum que trabaja mientras duermes. Despierta con la piel que te prometieron." },
+        { "headline": "No parpadees", "copy": "60 segundos para mostrar por que este hoodie es el ultimo que compraras este ano." },
+        { "headline": "Compra inteligente", "copy": "La segmentacion con IA hace que tu presupuesto encuentre compradores, no curiosos." }
+      ]
+    },
+    "photo": {
+      "title": "Hecho para creadoras que publican cada semana.",
+      "subtitle": "Ya sea una marca o diez, ContenidIA mantiene la voz consistente y el calendario lleno."
+    },
+    "how": {
+      "title": "De la idea a la campana en cuatro pasos",
+      "subtitle": "Describe tu marca una sola vez y lanza campanas on-brand en cada canal donde vendes.",
+      "steps": [
+        { "title": "Elige tu plataforma", "desc": "Meta, Google Performance Max, TikTok, Instagram, Facebook o WhatsApp. Optimizamos formatos y specs para cada una." },
+        { "title": "Describe la campana", "desc": "Sube imagenes de referencia de tu producto y cuentanos que vendes y a quien. Con dos frases alcanza." },
+        { "title": "La IA genera todo", "desc": "Copy, captions, imagenes cuadradas + verticales + horizontales, segmentacion y presupuesto — alineadas a tu voz de marca." },
+        { "title": "Revisa, ajusta, publica", "desc": "Edita cualquier asset con IA, elige tus favoritos, y publica directo a Meta o Google Ads con un clic." }
+      ]
+    },
+    "features": {
+      "title": "Todo lo que necesitas para lanzar una campana",
+      "subtitle": "Hecho para marketers que quieren resultados sin el tiempo de produccion.",
+      "items": [
+        { "title": "Copy y captions con IA", "desc": "Textos optimizados por plataforma — cortos para TikTok, escaneables para Meta, con palabras clave para Google." },
+        { "title": "Imagenes multi-formato", "desc": "Cuadrada para Feed, vertical para Stories y Reels, horizontal para Performance Max y YouTube — todas en paralelo." },
+        { "title": "Conceptos de Reels", "desc": "Sube un clip 9:16 y lo emparejamos automaticamente con copy y captions para Stories y Reels." },
+        { "title": "Segmentacion inteligente", "desc": "Presupuesto, intereses, placements y estrategia de puja sugeridos segun tu marca y tus campanas anteriores." },
+        { "title": "Publicacion con un clic", "desc": "Lanza directo a Meta Ads Manager o Google Ads Performance Max sin salir de la app." },
+        { "title": "Refina con IA", "desc": "\"Hazlo mas corto\" o \"agrega un gancho de descuento\" — edita cualquier asset en lenguaje natural y regenera solo lo necesario." }
+      ]
+    },
+    "pricing": {
+      "title": "Paga por lo que generas",
+      "subtitle": "Sin suscripciones. Compra un paquete de tokens y usalos cuando los necesites — no caducan.",
+      "popular": "Mas popular",
+      "tokens": "tokens",
+      "cta": "Empezar",
+      "tiers": {
+        "pkg_50": "Starter",
+        "pkg_100": "Pro",
+        "pkg_200": "Scale"
+      },
+      "costsTitle": "Que compra un token",
+      "costCopy": "Copy + caption para una campana — 50 tokens",
+      "costImage": "Una imagen generada por IA — 40 tokens",
+      "costCustom": "Refinar un asset con IA cuesta lo mismo que generarlo nuevo"
+    },
+    "finalCta": {
+      "title": "Lanza tu proxima campana esta tarde.",
+      "subtitle": "Crea una cuenta gratis, agrega tu marca y corre tu primera campana con IA en menos de 10 minutos.",
+      "cta": "Crear mi cuenta"
+    }
+  },
   "nav": {
     "dashboard": "Panel",
     "campaigns": "Campanas",
