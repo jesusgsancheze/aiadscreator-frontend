@@ -4,15 +4,38 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { authApi } from '../api/auth.api';
 import { useAuthStore } from '../store/auth.store';
+import { useUIStore } from '../store/ui.store';
+
+type Lang = 'en' | 'es' | 'fr';
 
 export function useLogin() {
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return useMutation({
     mutationFn: authApi.login,
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
+      const { language: pickedLanguage, pendingLanguageSync, setLanguage, clearPendingLanguageSync } =
+        useUIStore.getState();
+      const backendLanguage = res.user.language as Lang | undefined;
+
+      // If the user explicitly picked a language pre-login and it differs from
+      // their stored preference, push it to the backend. Otherwise, adopt the
+      // backend's stored language locally.
+      if (pendingLanguageSync && backendLanguage && pickedLanguage !== backendLanguage) {
+        try {
+          const updated = await authApi.updateLanguage(pickedLanguage);
+          res.user.language = updated.language;
+        } catch {
+          // Silent: language sync is non-critical to the login flow.
+        }
+      } else if (backendLanguage && backendLanguage !== pickedLanguage) {
+        setLanguage(backendLanguage);
+        i18n.changeLanguage(backendLanguage);
+      }
+      clearPendingLanguageSync();
+
       setAuth(res.user, res.accessToken);
       toast.success(t('common.success'));
       navigate('/dashboard');
@@ -50,6 +73,36 @@ export function useResendVerification() {
     mutationFn: authApi.resendVerification,
     onSuccess: () => {
       toast.success(t('common.success'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useForgotPassword() {
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: authApi.forgotPassword,
+    onSuccess: () => {
+      toast.success(t('auth.forgotPasswordSent'));
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || t('common.error'));
+    },
+  });
+}
+
+export function useResetPassword() {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: authApi.resetPassword,
+    onSuccess: () => {
+      toast.success(t('auth.resetPasswordSuccess'));
+      navigate('/login');
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || t('common.error'));

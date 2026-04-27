@@ -35,7 +35,7 @@ export default function LanguageSwitcher() {
 
   const handleSelect = (code: string) => {
     i18n.changeLanguage(code);
-    setLanguage(code as 'en' | 'es' | 'fr');
+    setLanguage(code as 'en' | 'es' | 'fr', { explicit: !token });
     if (token) {
       updateLanguage.mutate(code);
     }

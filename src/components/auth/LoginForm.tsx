@@ -77,6 +77,15 @@ export default function LoginForm() {
           {...register('password')}
         />
 
+        <div className="flex justify-end -mt-1">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-brand-primary hover:text-brand-primary-dark transition-colors"
+          >
+            {t('auth.forgotPassword')}
+          </Link>
+        </div>
+
         <Button type="submit" loading={login.isPending} className="w-full" size="lg">
           {t('auth.login')}
         </Button>

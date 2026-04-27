@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Sparkles } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -7,7 +8,10 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex relative">
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSwitcher />
+      </div>
       {/* Left panel - gradient */}
       <div className="hidden lg:flex lg:w-1/2 gradient-brand relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10" />

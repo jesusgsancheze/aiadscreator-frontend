@@ -40,6 +40,16 @@ export const authApi = {
     return data;
   },
 
+  forgotPassword: async (email: string) => {
+    const { data } = await api.post('/auth/forgot-password', { email });
+    return data;
+  },
+
+  resetPassword: async (payload: { token: string; password: string }) => {
+    const { data } = await api.post('/auth/reset-password', payload);
+    return data;
+  },
+
   getProfile: async (): Promise<User> => {
     const { data } = await api.get('/auth/me');
     return data;
