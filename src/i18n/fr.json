@@ -117,7 +117,8 @@
     "confirmPassword": "Confirmer le mot de passe",
     "verifying": "Verification de votre email...",
     "verified": "Email verifie avec succes! Vous pouvez maintenant vous connecter.",
-    "verifyFailed": "La verification a echoue. Veuillez reessayer."
+    "verifyFailed": "La verification a echoue. Veuillez reessayer.",
+    "loginFailed": "Email ou mot de passe incorrect. Veuillez reessayer."
   },
   "dashboard": {
     "title": "Tableau de bord",

@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Mail, Lock, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Mail, Lock, Sparkles, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import { useLogin, useResendVerification } from '../../hooks/useAuth';
@@ -22,6 +22,7 @@ export default function LoginForm() {
   const login = useLogin();
   const resend = useResendVerification();
   const [showResend, setShowResend] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -33,11 +34,16 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginFormData) => {
+    setErrorMessage(null);
+    setShowResend(false);
     login.mutate(data, {
       onError: (err: any) => {
         if (err.response?.status === 403) {
           setShowResend(true);
         }
+        setErrorMessage(
+          err.response?.data?.message || t('auth.loginFailed'),
+        );
       },
     });
   };
@@ -85,6 +91,21 @@ export default function LoginForm() {
             {t('auth.forgotPassword')}
           </Link>
         </div>
+
+        <AnimatePresence>
+          {errorMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              role="alert"
+              className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700"
+            >
+              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+              <span>{errorMessage}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <Button type="submit" loading={login.isPending} className="w-full" size="lg">
           {t('auth.login')}

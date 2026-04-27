@@ -20,7 +20,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only treat 401 as a session expiry if the request actually carried a
+    // token. Otherwise it's a failed login/credential check — let the caller
+    // surface the error message instead of force-navigating.
+    const hadAuthHeader = Boolean(error.config?.headers?.Authorization);
+    if (error.response?.status === 401 && hadAuthHeader) {
       localStorage.removeItem('auth-token');
       localStorage.removeItem('auth-user');
       window.location.href = '/login';

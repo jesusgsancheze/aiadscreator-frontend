@@ -117,7 +117,8 @@
     "confirmPassword": "Confirmar contrasena",
     "verifying": "Verificando tu correo...",
     "verified": "Correo verificado con exito! Ya puedes iniciar sesion.",
-    "verifyFailed": "La verificacion fallo. Por favor intenta de nuevo."
+    "verifyFailed": "La verificacion fallo. Por favor intenta de nuevo.",
+    "loginFailed": "Correo o contrasena incorrectos. Por favor intenta de nuevo."
   },
   "dashboard": {
     "title": "Panel",
