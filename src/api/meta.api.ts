@@ -34,6 +34,14 @@ export const metaApi = {
     return data;
   },
 
+  lookupInstagramAccount: async (payload: {
+    accessToken: string;
+    pageId: string;
+  }): Promise<{ id: string; username?: string }> => {
+    const { data } = await api.post('/meta/instagram-account/lookup', payload);
+    return data;
+  },
+
   verifyConnection: async (id: string): Promise<MetaConnection> => {
     const { data } = await api.post(`/meta/connections/${id}/verify`);
     return data;

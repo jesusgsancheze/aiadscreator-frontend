@@ -1,15 +1,18 @@
-import { useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useReducer, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import Button from '../ui/Button';
+import Spinner from '../ui/Spinner';
 import Step1SocialMedia from './steps/Step1SocialMedia';
 import Step2SelectClient from './steps/Step2SelectClient';
 import Step3UploadImage from './steps/Step3UploadImage';
 import Step4Descriptions from './steps/Step4Descriptions';
 import Step5AIGeneration from './steps/Step5AIGeneration';
 import Step6Review from './steps/Step6Review';
+import { useCampaign } from '../../hooks/useCampaigns';
+import type { Client } from '../../types/client';
 import type { SocialMedia, TextAgent, ImageAgent } from '../../types/campaign';
 import { cn } from '../../lib/utils';
 
@@ -39,7 +42,8 @@ type CampaignAction =
   | { type: 'ADD_IMAGES'; files: File[]; previews: string[] }
   | { type: 'REMOVE_IMAGE'; index: number }
   | { type: 'SET_DESCRIPTIONS'; title: string; campaignDescription: string; imageDescription: string; imageCount: number; textAgent: TextAgent; imagePromptAgent: TextAgent; imageAgent: ImageAgent; preserveProduct: boolean }
-  | { type: 'SET_CAMPAIGN_ID'; campaignId: string };
+  | { type: 'SET_CAMPAIGN_ID'; campaignId: string }
+  | { type: 'HYDRATE_DRAFT'; payload: Partial<CampaignState> };
 
 function reducer(state: CampaignState, action: CampaignAction): CampaignState {
   switch (action.type) {
@@ -75,6 +79,8 @@ function reducer(state: CampaignState, action: CampaignAction): CampaignState {
       };
     case 'SET_CAMPAIGN_ID':
       return { ...state, campaignId: action.campaignId };
+    case 'HYDRATE_DRAFT':
+      return { ...state, ...action.payload };
     default:
       return state;
   }
@@ -110,7 +116,48 @@ const stepKeys = [
 export default function CampaignStepper() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // Resume an existing draft (e.g. after the user left to buy tokens).
+  const draftId = searchParams.get('draft');
+  const { data: draft, isLoading: draftLoading } = useCampaign(draftId || '');
+  const hydratedRef = useRef(false);
+
+  useEffect(() => {
+    if (!draftId || !draft || hydratedRef.current) return;
+    hydratedRef.current = true;
+    const client = draft.clientId as string | Client;
+    dispatch({
+      type: 'HYDRATE_DRAFT',
+      payload: {
+        step: 5,
+        socialMedia: draft.socialMedia,
+        clientId: typeof client === 'object' ? client._id : client,
+        clientName: typeof client === 'object' ? client.name : '',
+        productImagePreviews: draft.productImages,
+        title: draft.title,
+        campaignDescription: draft.campaignDescription,
+        imageDescription: draft.imageDescription,
+        imageCount: draft.imageCount,
+        textAgent: draft.textAgent,
+        imagePromptAgent: draft.imagePromptAgent,
+        imageAgent: draft.imageAgent,
+        preserveProduct: draft.preserveProduct,
+        campaignId: draft._id,
+      },
+    });
+  }, [draftId, draft]);
+
+  // While a draft is still loading, hold off rendering the wizard so we don't
+  // flash step 1 before jumping to the generation step.
+  if (draftId && (draftLoading || !hydratedRef.current)) {
+    return (
+      <div className="flex justify-center py-20">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
 
   const canNext = () => {
     switch (state.step) {

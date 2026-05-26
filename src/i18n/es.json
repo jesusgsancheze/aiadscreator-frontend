@@ -193,6 +193,9 @@
     "creatingImages": "Creando imagenes...",
     "generationComplete": "Generacion completa!",
     "startGeneration": "Iniciar Generacion IA",
+    "savingDraft": "Guardando tu borrador…",
+    "savingDraftHint": "Subiendo tus imagenes y guardando la campana.",
+    "draftSavedHint": "Tu borrador esta guardado. Puedes salir a comprar tokens y retomarlo despues desde Campanas.",
     "socialMediaLink": "Enlace de Red Social",
     "socialMediaLinkPlaceholder": "Pega la URL de la publicacion...",
     "editWithAI": "Editar con IA",
@@ -243,6 +246,8 @@
   },
   "clients": {
     "title": "Marcas",
+    "connections": "Integraciones",
+    "connectionsDesc": "Conecta las cuentas publicitarias de esta marca una vez aqui, y todas sus campanas podran publicarse.",
     "create": "Crear Marca",
     "name": "Nombre de la Marca",
     "logo": "Logo",
@@ -282,6 +287,9 @@
     "adAccountId": "ID de cuenta publicitaria",
     "pageId": "ID de pagina",
     "instagramAccountId": "ID de cuenta de Instagram",
+    "igDetect": "Detectar desde la Pagina",
+    "igDetectNeedsPage": "Primero ingresa el token de acceso y el ID de la Pagina.",
+    "igDetectSuccess": "Cuenta de Instagram conectada encontrada:",
     "verify": "Verificar",
     "verified": "Verificado",
     "verifySuccess": "Conexion verificada exitosamente",
@@ -348,7 +356,7 @@
       "pageDesc": "La forma mas rapida: Configuracion del Negocio → Paginas → selecciona tu pagina → el ID numerico aparece debajo del nombre. Tambien puedes encontrarlo en la pagina, en Informacion → Transparencia de la pagina.",
       "pageCta": "Abrir Configuracion – Paginas",
       "igTitle": "4. ID de cuenta de Instagram (opcional)",
-      "igDesc": "Solo necesario si vas a publicar en Instagram. Configuracion del Negocio → Cuentas → Cuentas de Instagram → selecciona tu cuenta → copia el ID numerico debajo del nombre de usuario. Tu Instagram debe ser una cuenta de Empresa o Creador vinculada al mismo Business Manager que la pagina anterior.",
+      "igDesc": "Opcional — dejalo en blanco y lo detectaremos automaticamente desde tu Pagina al guardar. Tu Instagram debe ser una cuenta de Empresa o Creador conectada a la Pagina anterior. Para configurarlo manualmente, abre el Explorador de la API Graph y solicita {page-id}?fields=instagram_business_account, luego copia el id devuelto (empieza por 1784…).",
       "igCta": "Abrir Configuracion – Instagram",
       "warning": "Mantén el token de acceso en privado. Si se filtra, revocarlo desde Configuracion del Negocio y genera uno nuevo."
     }
@@ -449,6 +457,9 @@
     "total": "Total"
   },
   "googleAds": {
+    "connection": "Google Ads",
+    "verify": "Verificar",
+    "reconnect": "Reconectar",
     "connectTitle": "Conectar Google Ads",
     "connectHeadline": "Autoriza el acceso a tu cuenta de Google Ads",
     "connectBody": "Seras redirigido a Google para iniciar sesion y otorgar permisos. No se publica nada hasta que hagas clic explicitamente en Publicar.",

@@ -8,6 +8,7 @@ import Modal from '../ui/Modal';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import { useCreateMetaConnection, useUpdateMetaConnection } from '../../hooks/useMeta';
+import { metaApi } from '../../api/meta.api';
 import type { MetaConnection } from '../../types/meta';
 
 const metaConnectionSchema = z.object({
@@ -37,15 +38,48 @@ export default function MetaConnectionForm({
   const updateConnection = useUpdateMetaConnection();
   const [showToken, setShowToken] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [igLoading, setIgLoading] = useState(false);
+  const [igUsername, setIgUsername] = useState<string | null>(null);
+  const [igError, setIgError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<MetaConnectionFormData>({
     resolver: zodResolver(metaConnectionSchema),
   });
+
+  const watchedToken = watch('accessToken');
+  const watchedPageId = watch('pageId');
+
+  const handleDetectInstagram = async () => {
+    setIgError(null);
+    setIgUsername(null);
+    if (!watchedToken || !watchedPageId) {
+      setIgError(t('meta.igDetectNeedsPage'));
+      return;
+    }
+    setIgLoading(true);
+    try {
+      const account = await metaApi.lookupInstagramAccount({
+        accessToken: watchedToken,
+        pageId: watchedPageId,
+      });
+      setValue('instagramAccountId', account.id, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+      setIgUsername(account.username || null);
+    } catch (err: any) {
+      setIgError(err.response?.data?.message || t('common.error'));
+    } finally {
+      setIgLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (connection) {
@@ -64,6 +98,8 @@ export default function MetaConnectionForm({
       });
     }
     setShowToken(false);
+    setIgUsername(null);
+    setIgError(null);
   }, [connection, reset, isOpen]);
 
   const onSubmit = (data: MetaConnectionFormData) => {
@@ -229,12 +265,35 @@ export default function MetaConnectionForm({
           {...register('pageId')}
         />
 
-        <Input
-          label={t('meta.instagramAccountId')}
-          placeholder="17841400000000000"
-          error={errors.instagramAccountId?.message}
-          {...register('instagramAccountId')}
-        />
+        <div className="space-y-1.5">
+          <div className="flex items-start gap-2">
+            <div className="flex-1">
+              <Input
+                label={t('meta.instagramAccountId')}
+                placeholder="17841400000000000"
+                error={errors.instagramAccountId?.message}
+                {...register('instagramAccountId')}
+              />
+            </div>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="mt-7 shrink-0"
+              onClick={handleDetectInstagram}
+              loading={igLoading}
+              disabled={!watchedToken || !watchedPageId}
+            >
+              {t('meta.igDetect')}
+            </Button>
+          </div>
+          {igUsername && (
+            <p className="text-xs text-green-600">
+              {t('meta.igDetectSuccess')} @{igUsername}
+            </p>
+          )}
+          {igError && <p className="text-xs text-red-500">{igError}</p>}
+        </div>
 
         <div className="flex justify-end gap-3 pt-4">
           <Button variant="ghost" type="button" onClick={onClose}>

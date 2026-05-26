@@ -30,7 +30,14 @@ interface Step5Props {
   onNext: () => void;
 }
 
-type GenerationPhase = 'idle' | 'creating' | 'generating' | 'polling' | 'done' | 'error';
+type GenerationPhase =
+  | 'init'
+  | 'creating'
+  | 'idle'
+  | 'generating'
+  | 'polling'
+  | 'done'
+  | 'error';
 
 const steps = [
   'generatingCopy',
@@ -41,7 +48,7 @@ const steps = [
 
 export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: Step5Props) {
   const { t } = useTranslation();
-  const [phase, setPhase] = useState<GenerationPhase>(state.campaignId ? 'polling' : 'idle');
+  const [phase, setPhase] = useState<GenerationPhase>(state.campaignId ? 'init' : 'creating');
   const [currentStep, setCurrentStep] = useState(0);
   const [campaignId, setCampaignId] = useState(state.campaignId);
 
@@ -56,37 +63,13 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
   const totalCost = costData?.total ?? 0;
   const hasEnoughTokens = balance >= totalCost;
 
-  // Animate through generation steps
-  useEffect(() => {
-    if (phase === 'generating' || phase === 'polling') {
-      const interval = setInterval(() => {
-        setCurrentStep((prev) => {
-          if (prev < steps.length - 1) return prev + 1;
-          return prev;
-        });
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [phase]);
-
-  // Poll campaign status
-  useEffect(() => {
-    if (campaign?.status === 'ready' || campaign?.status === 'published') {
-      setPhase('done');
-      setCurrentStep(steps.length);
-    } else if (campaign?.status === 'failed') {
-      setPhase('error');
-    } else if (campaign?.status === 'generating' && phase === 'polling') {
-      const timeout = setTimeout(() => refetch(), 3000);
-      return () => clearTimeout(timeout);
-    }
-  }, [campaign?.status, phase, refetch]);
-
-  const startGeneration = async () => {
+  // Persist the campaign as a draft as soon as we land here without one, so the
+  // work survives the user leaving to buy tokens (purchases need admin approval,
+  // so they return later — often in a new session). Images upload to R2 and all
+  // fields persist to MongoDB; no tokens are charged until generation.
+  const createDraft = async () => {
     try {
       setPhase('creating');
-
-      // Create campaign first
       const formData = new FormData();
       formData.append('title', state.title);
       formData.append('socialMedia', state.socialMedia!);
@@ -103,16 +86,72 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
       });
 
       const res = await createCampaign.mutateAsync(formData);
-      const newId = res._id;
-      setCampaignId(newId);
-      onCampaignCreated(newId);
+      setCampaignId(res._id);
+      onCampaignCreated(res._id);
+      setPhase('idle');
+    } catch {
+      setPhase('error');
+    }
+  };
 
-      // Trigger generation
-      setPhase('generating');
-      await generateContent.mutateAsync(newId);
+  // Fresh flow only: no campaignId yet → create the draft once on entry.
+  // Resume flow already carries a campaignId, so this is skipped.
+  useEffect(() => {
+    if (!campaignId && phase === 'creating') {
+      createDraft();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Derive the phase from the persisted campaign status. This drives both the
+  // fresh flow (after the draft is created) and the resume flow.
+  useEffect(() => {
+    if (!campaign) return;
+    if (campaign.status === 'ready' || campaign.status === 'published') {
+      setPhase('done');
+      setCurrentStep(steps.length);
+    } else if (campaign.status === 'failed') {
+      setPhase('error');
+    } else if (campaign.status === 'generating') {
       setPhase('polling');
-    } catch (err) {
+    } else if (campaign.status === 'draft') {
+      // Only drop back to the token gate if we're not mid-generation.
+      setPhase((prev) =>
+        prev === 'generating' || prev === 'polling' ? prev : 'idle',
+      );
+    }
+  }, [campaign?.status]);
+
+  // Animate through generation steps
+  useEffect(() => {
+    if (phase === 'generating' || phase === 'polling') {
+      const interval = setInterval(() => {
+        setCurrentStep((prev) => {
+          if (prev < steps.length - 1) return prev + 1;
+          return prev;
+        });
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [phase]);
+
+  // Keep polling the campaign while generation is in flight.
+  useEffect(() => {
+    if (campaign?.status === 'generating' && phase === 'polling') {
+      const timeout = setTimeout(() => refetch(), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [campaign?.status, phase, refetch]);
+
+  // Charges tokens and runs generation against the already-persisted draft.
+  const startGeneration = async () => {
+    if (!campaignId) return;
+    try {
+      setPhase('generating');
+      setCurrentStep(0);
+      await generateContent.mutateAsync(campaignId);
+      setPhase('polling');
+    } catch {
       setPhase('error');
     }
   };
@@ -178,6 +217,10 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
                   >
                     {t('tokens.buyTokens')} &rarr;
                   </Link>
+                  <p className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-500">
+                    <CheckCircle className="h-3.5 w-3.5 shrink-0 mt-px text-emerald-500" />
+                    {t('campaigns.draftSavedHint')}
+                  </p>
                 </div>
               )}
             </Card>
@@ -205,7 +248,23 @@ export default function Step5AIGeneration({ state, onCampaignCreated, onNext }: 
     return (
       <div className="text-center py-12">
         <p className="text-red-500 mb-4">{t('common.error')}</p>
-        <Button onClick={startGeneration}>{t('campaigns.startGeneration')}</Button>
+        <Button onClick={campaignId ? startGeneration : createDraft}>
+          {t('common.retry')}
+        </Button>
+      </div>
+    );
+  }
+
+  if (phase === 'init' || phase === 'creating') {
+    return (
+      <div className="text-center py-20">
+        <Spinner size="lg" className="mx-auto mb-6" />
+        <p className="text-sm font-medium text-slate-700">
+          {t('campaigns.savingDraft')}
+        </p>
+        <p className="text-xs text-slate-400 mt-1">
+          {t('campaigns.savingDraftHint')}
+        </p>
       </div>
     );
   }

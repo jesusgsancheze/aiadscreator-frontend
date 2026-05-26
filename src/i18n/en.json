@@ -193,6 +193,9 @@
     "creatingImages": "Creating images...",
     "generationComplete": "Generation complete!",
     "startGeneration": "Start AI Generation",
+    "savingDraft": "Saving your draft…",
+    "savingDraftHint": "Uploading your images and saving the campaign.",
+    "draftSavedHint": "Your draft is saved. You can leave to buy tokens and resume it later from Campaigns.",
     "socialMediaLink": "Social Media Link",
     "socialMediaLinkPlaceholder": "Paste the published post URL...",
     "editWithAI": "Edit with AI",
@@ -243,6 +246,8 @@
   },
   "clients": {
     "title": "Brands",
+    "connections": "Integrations",
+    "connectionsDesc": "Connect this brand's ad accounts once here, and every campaign for it can publish.",
     "create": "Create Brand",
     "name": "Brand Name",
     "logo": "Logo",
@@ -282,6 +287,9 @@
     "adAccountId": "Ad Account ID",
     "pageId": "Page ID",
     "instagramAccountId": "Instagram Account ID",
+    "igDetect": "Detect from Page",
+    "igDetectNeedsPage": "Enter the access token and Page ID first.",
+    "igDetectSuccess": "Connected Instagram account found:",
     "verify": "Verify",
     "verified": "Verified",
     "verifySuccess": "Connection verified successfully",
@@ -348,7 +356,7 @@
       "pageDesc": "Easiest path: Business Settings → Pages → select your page → the numeric ID is shown under the page name. You can also find it on the page itself under About → Page transparency.",
       "pageCta": "Open Business Settings – Pages",
       "igTitle": "4. Instagram Account ID (optional)",
-      "igDesc": "Only required if you plan to publish to Instagram. Business Settings → Accounts → Instagram accounts → select your account → copy the numeric ID below the username. Your Instagram must be a Business or Creator account linked to the same Business Manager as the page above.",
+      "igDesc": "Optional — leave this blank and we'll detect it automatically from your Page when you save. Your Instagram must be a Business or Creator account connected to the Page above. To set it manually, open the Graph API Explorer and request {page-id}?fields=instagram_business_account, then copy the returned id (it starts with 1784…).",
       "igCta": "Open Business Settings – Instagram",
       "warning": "Keep the access token private. If it leaks, revoke it from Business Settings and generate a new one."
     }
@@ -449,6 +457,9 @@
     "total": "Total"
   },
   "googleAds": {
+    "connection": "Google Ads",
+    "verify": "Verify",
+    "reconnect": "Reconnect",
     "connectTitle": "Connect Google Ads",
     "connectHeadline": "Authorize access to your Google Ads account",
     "connectBody": "You'll be redirected to Google to sign in and grant permission. Nothing is published until you explicitly click Publish.",

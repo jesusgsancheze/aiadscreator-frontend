@@ -50,6 +50,13 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
   const clientName =
     typeof campaign.clientId === 'object' ? (campaign.clientId as Client).name : '';
 
+  // Drafts were never generated, so open them back in the wizard to resume
+  // (and finish generation) rather than the read-only detail page.
+  const target =
+    campaign.status === 'draft'
+      ? `/campaigns/new?draft=${campaign._id}`
+      : `/campaigns/${campaign._id}`;
+
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm(t('common.confirm'))) {
@@ -62,14 +69,14 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      onClick={() => navigate(`/campaigns/${campaign._id}`)}
+      onClick={() => navigate(target)}
       className="cursor-pointer group"
     >
       <Card className="hover:shadow-md transition-shadow relative">
         {/* Action buttons - visible on hover */}
         <div className="absolute top-3 right-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
-            onClick={(e) => { e.stopPropagation(); navigate(`/campaigns/${campaign._id}`); }}
+            onClick={(e) => { e.stopPropagation(); navigate(target); }}
             className="p-1.5 rounded-lg bg-white shadow-sm border border-slate-100 text-slate-500 hover:text-brand-primary hover:border-brand-primary/20 transition-all"
             title={t('common.edit')}
           >

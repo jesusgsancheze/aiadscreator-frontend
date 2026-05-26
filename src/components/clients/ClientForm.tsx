@@ -10,7 +10,7 @@ import FileUpload from '../ui/FileUpload';
 import type { Client } from '../../types/client';
 import { useCreateClient, useUpdateClient } from '../../hooks/useClients';
 import { getImageUrl } from '../../lib/utils';
-import ClientMetaConnection from '../meta/ClientMetaConnection';
+import ClientConnections from './ClientConnections';
 
 const clientSchema = z.object({
   name: z.string().min(2),
@@ -141,7 +141,7 @@ export default function ClientForm({ isOpen, onClose, client }: ClientFormProps)
       </form>
 
       {client && (
-        <ClientMetaConnection clientId={client._id} />
+        <ClientConnections clientId={client._id} />
       )}
     </Modal>
   );

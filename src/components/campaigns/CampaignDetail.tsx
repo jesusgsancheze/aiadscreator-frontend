@@ -34,7 +34,6 @@ import type { Campaign, SocialMedia, CampaignStatus } from '../../types/campaign
 import type { Client } from '../../types/client';
 import {
   useUpdateCampaign,
-  useUpdatePerformance,
   useDeleteCampaign,
 } from '../../hooks/useCampaigns';
 import { useMetaInsights } from '../../hooks/useMeta';
@@ -154,7 +153,6 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const updateCampaign = useUpdateCampaign();
-  const updatePerformance = useUpdatePerformance();
   const deleteCampaign = useDeleteCampaign();
   const [socialMediaLink, setSocialMediaLink] = useState(campaign.socialMediaLink || '');
   const [publishModalOpen, setPublishModalOpen] = useState(false);
@@ -169,7 +167,7 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
   };
 
   const handleSaveLink = () => {
-    updatePerformance.mutate({
+    updateCampaign.mutate({
       id: campaign._id,
       payload: { socialMediaLink },
     });
@@ -704,7 +702,7 @@ export default function CampaignDetail({ campaign }: CampaignDetailProps) {
               <Button
                 size="sm"
                 onClick={handleSaveLink}
-                loading={updatePerformance.isPending}
+                loading={updateCampaign.isPending}
               >
                 {t('common.save')}
               </Button>
